@@ -1,15 +1,20 @@
 # if __name__ == "__main__":
 from player.py import Player
 import random
+file = open("record.txt")
 
-##load file or initialize
+#### Initialize Player ####
+#load from file or initialize player
+#if user chooses to load, open file. Or initialize player
 
-#king gives you 100 gold
+#king gives you 100 gold.
 
+#Initialize phase. Increment every time player win.
 phase = 0
+
 # #1 Adventure
 ##initialize enemy
-##Fight
+##Fight, lvl up
 
 if(win):
     phase+=1
@@ -18,8 +23,8 @@ elif(lose):
     record = {phase: int, playername, status:{"hp":int, "mp":int, "str": int, "vit":int}, item:{str}, money:int}
     file.write(record)
 
-#choices: adventure, shop, lake
-#Adventure loop 
+##### ENTER LOOP ####
+#choices: adventure, shop, lake 
 while(True):
     #Shop appears with 1/4 chance
     shop = True if 1 == random.randint(4) else False
@@ -29,7 +34,8 @@ while(True):
         pass
     elif(lake):
         pass
+    #Adventure
     else:
         pass
 
-
+close(file)
