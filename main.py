@@ -30,7 +30,9 @@ class Player(object):
         self.width = width
         self.height = height
         self.vel = 15
-        self.standing = True
+        self.right = True
+        self.left = False
+        self.standing = False
         self.walkCount = 0
         self.money = 100
 
@@ -39,13 +41,16 @@ class Player(object):
         if self.walkCount + 1 >= 12:
             self.walkCount = 0
         if not(self.standing):
-            win.blit(walk[self.walkCount//3], (self.x, self.y))
-            self.walkCount += 1
-        else:
-            win.blit(standing[self.walkCount//3], (self.x, self.y))
-            self.walkCount += 1
-        
-        
+            if self.left:
+                win.blit(walk[self.walkCount//3], (self.x, self.y))
+                self.walkCount += 1
+            elif self.right:
+                win.blit(pygame.transform.flip(walk[self.walkCount//3], True, False), (self.x, self.y))
+                self.walkCount += 1
+        # if idle images facing front exist
+        # else:
+        #     win.blit(pygame.transform.flip(standing[self.walkCount//3], True, False), (self.x, self.y))
+        #     self.walkCount += 1
 
         # pygame.draw.rect(win, (255,0,0), (self.x, self.y, self.width, self.height))
 
@@ -71,12 +76,11 @@ def redrawGameWindow(player, enemy):
     nameText = font.render(str(player.name), 1, (0,0,0))
     win.blit(nameText, (380, 5))
     goldText = font.render('Gold: ' + str(player.money), 1, (0,0,0))
-    win.blit(goldText, (380, 20))
+    win.blit(goldText, (350, 20))
     
     enemy.draw(win)
     player.draw(win)
     
-    # message_display("HELLO, slime. Do you want to join my party? \n")
     pygame.display.update()
 
 ## not used for now
@@ -107,6 +111,8 @@ def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
     win.blit(TextSurf, TextRect)
     pygame.display.update()
 
+
+
 def main():
     player = Player(200, 410, 64, 64)
     enemy = Enemy(400, 410, 40, 40)
@@ -124,9 +130,6 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
-        # ---- key control
-        keys = pygame.key.get_pressed()
-
         # player-enemy interaction
         if abs(player.x - enemy.x) < 20:
             # lift enemy by 20
@@ -135,22 +138,34 @@ def main():
                 #display text
                 message_display("catch me if you can!", enemy.x, enemy.y-enemy.height)
                 enemy.x = random.randint(0, SCREEN_WIDTH)
+                player.money += 100
         else:
             textDisplayed = False
             enemy.y = 410
+        
+        # ---- key control
+        keys = pygame.key.get_pressed()
+
         if keys[pygame.K_LEFT] and player.x > player.vel:
             player.x -= player.vel
             player.standing = False
+            player.right = False
+            player.left = True
         elif keys[pygame.K_RIGHT] and player.x < SCREEN_WIDTH - player.vel:
             player.x += player.vel
             player.standing = False
-        else:
-            player.standing = True
+            player.right = True
+            player.left = False
+        #Only if idle images facing front exist
+        # else:
+        #     player.standing = True
+        #     player.right = False
+        #     player.left = False
             # TODO reset walkcount when key is released
             # player.walkCount = 0
 
         # ---- Game logic
-        # if player goes beyond width, restart from 200
+        # if player enter a door, restart from 200
         if player.x > SCREEN_WIDTH:
             player.x = 200
 
