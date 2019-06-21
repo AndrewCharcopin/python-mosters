@@ -1,7 +1,7 @@
 import pygame, sys
-import random
-import time
+import random, time
 from title import StartScreen, PlayerInput
+from characters import Player, Enemy
 
 BLACK = (0,0,0)
 GREY = (180,180,180)
@@ -10,64 +10,15 @@ RED = (255,0,0)
 GREEN = (0,255,0)
 BLUE = (0,0,255)
 
+bg = pygame.image.load('assets/bg.jpg')
+
 pygame.init()
 
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 480
 win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Slime Game")
-
-walk = [pygame.image.load('assets/slime/slime-move-0.png'),pygame.image.load('assets/slime/slime-move-1.png'),pygame.image.load('assets/slime/slime-move-2.png'),pygame.image.load('assets/slime/slime-move-3.png')]
-standing = [pygame.image.load('assets/slime/slime-idle-0.png'),pygame.image.load('assets/slime/slime-idle-1.png'),pygame.image.load('assets/slime/slime-idle-2.png'),pygame.image.load('assets/slime/slime-idle-3.png')]
-bg = pygame.image.load('assets/bg.jpg')
-
 clock = pygame.time.Clock()
-
-class Player(object):
-    def __init__(self, x,y,width,height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.vel = 15
-        self.right = True
-        self.left = False
-        self.standing = False
-        self.walkCount = 0
-        self.money = 100
-
-    def draw(self, win):
-        # 3frame per image
-        if self.walkCount + 1 >= 12:
-            self.walkCount = 0
-        if not(self.standing):
-            if self.left:
-                win.blit(walk[self.walkCount//3], (self.x, self.y))
-                self.walkCount += 1
-            elif self.right:
-                win.blit(pygame.transform.flip(walk[self.walkCount//3], True, False), (self.x, self.y))
-                self.walkCount += 1
-        # if idle images facing front exist
-        # else:
-        #     win.blit(pygame.transform.flip(standing[self.walkCount//3], True, False), (self.x, self.y))
-        #     self.walkCount += 1
-
-        # pygame.draw.rect(win, (255,0,0), (self.x, self.y, self.width, self.height))
-
-class Enemy(object):
-    def __init__(self, x,y,width,height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.hitbox = (self.x + 20, self.y, 28, 60)
-
-    def draw(self, win):
-        pygame.draw.rect(win, (255,255,0), (self.x, self.y, self.width, self.height))
-
-
-textDisplayed = False
-currentText = ""
 
 # ---- draw!
 def redrawGameWindow(player, enemy):
@@ -111,14 +62,10 @@ def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
     win.blit(TextSurf, TextRect)
     pygame.display.update()
 
-
-
 def main():
-    player = Player(200, 410, 64, 64)
-    enemy = Enemy(400, 410, 40, 40)
-
     StartScreen()
-    player.name = PlayerInput()
+    player = Player(200, 410, PlayerInput())
+    enemy = Enemy(400, 410, 40, 40)
 
     run = True
     while run:
