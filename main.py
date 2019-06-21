@@ -1,88 +1,163 @@
-from models.py import *
+import pygame, sys
 import random
+import time
+from title import StartScreen, PlayerInput
 
+BLACK = (0,0,0)
+GREY = (180,180,180)
+WHITE = (255,255,255)
+RED = (255,0,0)
+GREEN = (0,255,0)
+BLUE = (0,0,255)
 
-class Main():
-    def __init__(self):
-        # Open file if exsisted, otherwise make a file
-        self.file = open("record.txt, w")
-        # Load other necessary files e.g. sound, image
+pygame.init()
 
-        self.init_game()
+SCREEN_WIDTH = 500
+SCREEN_HEIGHT = 480
+win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Slime Game")
 
-    def init_game(self):
-        # show title
-        self.game_state = TITLE
-        #Initialize phase. Increment every time player win.
-        self.phase = 0
+walk = [pygame.image.load('assets/slime/slime-move-0.png'),pygame.image.load('assets/slime/slime-move-1.png'),pygame.image.load('assets/slime/slime-move-2.png'),pygame.image.load('assets/slime/slime-move-3.png')]
+standing = [pygame.image.load('assets/slime/slime-idle-0.png'),pygame.image.load('assets/slime/slime-idle-1.png'),pygame.image.load('assets/slime/slime-idle-2.png'),pygame.image.load('assets/slime/slime-idle-3.png')]
+bg = pygame.image.load('assets/bg.jpg')
 
-        #### Initialize Player ####
-        #load from file or initialize player
-        #if user chooses to load, open file. Or initialize player
-        i = input("Type player number to load, or type 0 to initialize.")
-        if(i == 0):
-            self.player = Player()
+clock = pygame.time.Clock()
+
+class Player(object):
+    def __init__(self, x,y,width,height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.vel = 15
+        self.standing = True
+        self.walkCount = 0
+        self.money = 100
+
+    def draw(self, win):
+        # 3frame per image
+        if self.walkCount + 1 >= 12:
+            self.walkCount = 0
+        if not(self.standing):
+            win.blit(walk[self.walkCount//3], (self.x, self.y))
+            self.walkCount += 1
         else:
-            # check if the player exists in record, then initialize player with the value
-            self.player = Player(file[i].status))
+            win.blit(standing[self.walkCount//3], (self.x, self.y))
+            self.walkCount += 1
         
-        #### King gives you 100 gold ####
-
-        self.game_state = ADVENTURE
-
-        #### Initialize enemy, Battle
-        enemy = Enemy()
-        b = Battle(player, enemy)
-        b.fight()
-        if(result == WIN):
-            b.win()
-        elif(result == LOSE):
-            b.lose()
-            
-
-        ##### ENTER LOOP ####
-        #choices: adventure, shop, lake 
-        while(True):
-            #Shop appears with 1/4 chance
-            shop = True if 1 == random.randint(4) else False
-            #Lake appears with 1/5 chance
-            lake = True if 1 == random.randint(5) else False
-            if(shop):
-                pass
-            elif(lake):
-                pass
-            #Battle
-            else:
-                b = Battle(player, enemy)
-
-
-        close(file)
-
-class Battle():
-    def __init__(self, player, enemy):
-        self.player = player
-        self.enemy = enemy
-    def fight(self):
-        result = None
-        if(self.player.status.hp > self.enemy.status.hp):
-            result = WIN
-        else:
-            result = LOST
-        return result
-
-    def win(self):
-        player.lvlup()
-        phase +=1
-
-    def lose(self):
-        record = {
-            phase: self.phase, playername: player.name, 
-            status:{"hp":player.status.hp, "mp":player.status.mp, "str": player.status.str, "vit":player.status.vit}, 
-            item:{player.items}, money:player.money
-            }
-        file.write(record)
         
+
+        # pygame.draw.rect(win, (255,0,0), (self.x, self.y, self.width, self.height))
+
+class Enemy(object):
+    def __init__(self, x,y,width,height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.hitbox = (self.x + 20, self.y, 28, 60)
+
+    def draw(self, win):
+        pygame.draw.rect(win, (255,255,0), (self.x, self.y, self.width, self.height))
+
+
+textDisplayed = False
+currentText = ""
+
+# ---- draw!
+def redrawGameWindow(player, enemy):
+    font = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
+    ## display name and gold
+    nameText = font.render(str(player.name), 1, (0,0,0))
+    win.blit(nameText, (380, 5))
+    goldText = font.render('Gold: ' + str(player.money), 1, (0,0,0))
+    win.blit(goldText, (380, 20))
     
+    enemy.draw(win)
+    player.draw(win)
+    
+    # message_display("HELLO, slime. Do you want to join my party? \n")
+    pygame.display.update()
+
+## not used for now
+class Room(object):
+    # wall_list = None
+    enemy_sprites = None
+    def __init__(self):
+        # self.wall_list = pygame.sprite.Group()
+        self.enemy_sprites = pygame.sprite.Group()
+
+##TODO Change room if player enter a door
+def createRoom(stage):
+    def __init__(self):
+        super().__init__()
+    room = Room()
+
+
+#win.blit(object, (x,y))
+def text_objects(text, font):
+    # render(text, antialias, color, background=None) -> Surface
+    textSurface = font.render(text, True, (255,255,255), (0,0,0))
+    return textSurface, textSurface.get_rect()
+
+def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
+    textFont = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
+    TextSurf, TextRect = text_objects(text, textFont)
+    TextRect.center = (x,y)
+    win.blit(TextSurf, TextRect)
+    pygame.display.update()
+
+def main():
+    player = Player(200, 410, 64, 64)
+    enemy = Enemy(400, 410, 40, 40)
+
+    StartScreen()
+    player.name = PlayerInput()
+
+    run = True
+    while run:
+        win.blit(bg, (0,0))
+        clock.tick(12)
+        pygame.time.delay(10)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+        # ---- key control
+        keys = pygame.key.get_pressed()
+
+        # player-enemy interaction
+        if abs(player.x - enemy.x) < 20:
+            # lift enemy by 20
+            enemy.y = 390
+            if keys[pygame.K_SPACE]:
+                #display text
+                message_display("catch me if you can!", enemy.x, enemy.y-enemy.height)
+                enemy.x = random.randint(0, SCREEN_WIDTH)
+        else:
+            textDisplayed = False
+            enemy.y = 410
+        if keys[pygame.K_LEFT] and player.x > player.vel:
+            player.x -= player.vel
+            player.standing = False
+        elif keys[pygame.K_RIGHT] and player.x < SCREEN_WIDTH - player.vel:
+            player.x += player.vel
+            player.standing = False
+        else:
+            player.standing = True
+            # TODO reset walkcount when key is released
+            # player.walkCount = 0
+
+        # ---- Game logic
+        # if player goes beyond width, restart from 200
+        if player.x > SCREEN_WIDTH:
+            player.x = 200
+
+        redrawGameWindow(player,enemy)
+        
+    pygame.quit()
+    sys.exit()
 
 if __name__ == "__main__":
-    Main()
+    main()
