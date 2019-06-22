@@ -14,7 +14,6 @@ class Player(object):
         self.standing = False
         self.walkCount = 0
         self.money = 100
-        self.strength = 100
 
     def draw(self, win):
         # 3frame per image
@@ -35,14 +34,12 @@ class Player(object):
         # pygame.draw.rect(win, (255,0,0), (self.x, self.y, self.width, self.height))
 
 class Enemy(object):
-    def __init__(self, x,y,width,height, name, strength):
+    def __init__(self, x,y,width,height):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.hitbox = (self.x + 20, self.y, 28, 60)
-        self.name = name
-        self.strength = strength
 
     def draw(self, win):
         pygame.draw.rect(win, (255,255,0), (self.x, self.y, self.width, self.height))

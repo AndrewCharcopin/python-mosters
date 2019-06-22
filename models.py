@@ -3,14 +3,14 @@
 
 class Model():
     def __init__(self, status):
-      # if status is given, take that status
-      if(status):
+    # if status is given, take that status
+    if(status):
         self.status = status
-      # if is NOT given, initialize the status with random value within range
-      else:
+    # if is NOT given, initialize the status with random value within range
+    else:
         self.status = {}
-        self.money = 0
-        self.items = []
+    self.money = 0
+    self.items = []
 
 class Player(Model):
     def __init__(self, status):
