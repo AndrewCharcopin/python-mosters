@@ -37,6 +37,8 @@ def redrawGameWindow(player, enemy):
     win.blit(nameText, (380, 5))
     goldText = font.render('Gold: ' + str(player.money), 1, (0,0,0))
     win.blit(goldText, (350, 20))
+    stageText = font.render('Stage: ' + str(stage_num), 1, (0,0,0))
+    win.blit(stageText, (350, 35))
     
     enemy.draw(win)
     player.draw(win)
