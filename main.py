@@ -72,21 +72,22 @@ def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
     win.blit(TextSurf, TextRect)
     pygame.display.update()
 
+#this is for getting an enemy at random
+def cast_dice():
+  return random.randint(1,6)
+
 def get_enemy(enemies):
-  dise = random.randint(1,6)
   if stage < 2:
     return enemies["slime"]
   elif stage >= 2 and stage < 5:
-    print(str(dise) + " stage2")
-    if dise % 2 == 0:
+    if dice % 2 == 0:
       return enemies["slime"]
     else:
       return enemies["vampire"]
   else:
-    print(str(dise) + " stage3")
-    if dise == 1 or 6:
+    if dice == 1 or dice == 2:
       return enemies["slime"]
-    elif dise == 2 or 3:
+    elif dice == 3 or dice == 4:
       return enemies["vampire"]
     else:
       return enemies["wolf"]
@@ -134,6 +135,8 @@ def main():
                 stage += 1
                 player.x = player.startX
                 displayText("win!!", 80, 100)
+                global dice
+                dice = cast_dice()
               else:
                 displayText("lost!!", 80, 100)
                   
