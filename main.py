@@ -34,7 +34,7 @@ def displayText(text):
     pygame.display.update()
 
 # ---- draw!
-def redrawGameWindow(player, enemy, text, textShown):
+def redrawGameWindow(player, enemy):
     font = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
     ## display name and gold
     nameText = font.render(str(player.name), 1, (0,0,0))
@@ -45,7 +45,7 @@ def redrawGameWindow(player, enemy, text, textShown):
     enemy.draw(win)
     player.draw(win)
 
-    while textShown:
+    while enemy.textShown:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 pygame.quit()
@@ -53,18 +53,12 @@ def redrawGameWindow(player, enemy, text, textShown):
         # if down is pressed, textshown = False
         keys = pygame.key.get_pressed()
         if keys[pygame.K_DOWN]:
-            textShown = False
-            text = ''
+            enemy.textShown = False
         pygame.draw.rect(win, (255, 0, 0), (20, 20, SCREEN_WIDTH-40, 100), 2)
         #display text
-        displayText(text)
+        displayText(enemy.text)
 
     pygame.display.update()
-
-def text_objects(text, font):
-    # render(text, antialias, color, background=None) -> Surface
-    textSurface = font.render(text, True, (255,255,255), (0,0,0))
-    return textSurface, textSurface.get_rect()
 
 def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
     textFont = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
@@ -72,16 +66,9 @@ def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
     TextRect.center = (x,y)
     win.blit(TextSurf, TextRect)
     pygame.display.update()
-
-# 1 make rec
-def makeText(text, col = WHITE):
-    box = (20, 20, SCREEN_WIDTH-40, 60)
-    pygame.draw.rect(win, WHITE, box, 2)
-    pygame.display.update()
-    textFont = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
     
 def main():
-    StartScreen()
+    # StartScreen()
     player = Player(200, 410, PlayerInput())
     enemy = Enemy(400, 410, 40, 40)
     textShown = False
@@ -104,8 +91,10 @@ def main():
             enemy.y = 390
             if keys[pygame.K_SPACE]:
                 #display text
-                textShown = True
+                enemy.textShown = True
                 text = enemy.text
+            else:
+                enemy.y = 410
         
         # ---- key control
         keys = pygame.key.get_pressed()
@@ -133,7 +122,7 @@ def main():
         if player.x > SCREEN_WIDTH:
             player.x = 200
 
-        redrawGameWindow(player,enemy, text, textShown)
+        redrawGameWindow(player,enemy)
         
     pygame.quit()
     sys.exit()
