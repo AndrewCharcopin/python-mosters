@@ -60,12 +60,12 @@ def redrawGameWindow(player, enemy):
 
     pygame.display.update()
 
-def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
-    textFont = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
-    TextSurf, TextRect = text_objects(text, textFont)
-    TextRect.center = (x,y)
-    win.blit(TextSurf, TextRect)
-    pygame.display.update()
+# def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
+#     textFont = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
+#     TextSurf, TextRect = text_objects(text, textFont)
+#     TextRect.center = (x,y)
+#     win.blit(TextSurf, TextRect)
+#     pygame.display.update()
     
 def main():
     # StartScreen()

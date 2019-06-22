@@ -42,7 +42,17 @@ class Enemy(object):
         self.hitbox = (self.x + 20, self.y, 28, 60)
         self.text = "Hello! Let's fight!"
         self.textShown = False
+        self.images = self.getImages()
+        self.walkCount = 0
 
+    def getImages(self):
+        images = [pygame.image.load('assets/enemies/0.jpeg'), pygame.image.load('assets/enemies/1.jpeg'), pygame.image.load('assets/enemies/2.jpeg'), pygame.image.load('assets/enemies/3.jpeg')]
+        return images
+        
     def draw(self, win):
-        pygame.draw.rect(win, (255,255,0), (self.x, self.y, self.width, self.height))
+        if self.walkCount + 1 >= 12:
+            self.walkCount = 0
+        win.blit(self.images[self.walkCount//3], (self.x, self.y))
+        self.walkCount += 1
+        # pygame.draw.rect(win, (255,255,0), (self.x, self.y, self.width, self.height))
 
