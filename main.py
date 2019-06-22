@@ -98,10 +98,10 @@ def main():
                 print(enemy.name)
                 if win_or_lose:
                   message_display("win!!!!")
+                  global stage_num
+                  stage_num += 1
                 else:
                   message_display("lose!!!")  
-                global stage_num
-                stage_num += 1
         else:
             textDisplayed = False
             enemy.y = 410
