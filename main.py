@@ -22,9 +22,9 @@ def load_png(name):
             image = image.convert()
         else:
             image = image.convert_alpha()
-    except pygame.error, message:
-        print 'Cannot load image:', fullname
-        raise SystemExit, message
+    except pygame.error as message:
+        print('Cannot load image:', fullname)
+        raise SystemExit
     return image
 
 # ---- draw!
@@ -128,12 +128,13 @@ def main():
     pygame.quit()
     sys.exit()
 
-Display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 pygame.init()
 
 pygame.display.set_caption("Slime Game")
 bg = load_png("bg.jpg")
+# bg = pygame.image.load('assets/images/bg.jpg')
 clock = pygame.time.Clock()
 
 if __name__ == "__main__":
