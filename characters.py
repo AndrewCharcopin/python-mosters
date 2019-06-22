@@ -14,6 +14,7 @@ class Player(object):
         self.standing = False
         self.walkCount = 0
         self.money = 100
+        self.strength = 100
 
     def draw(self, win):
         # 3frame per image
@@ -32,15 +33,24 @@ class Player(object):
         #     self.walkCount += 1
 
         # pygame.draw.rect(win, (255,0,0), (self.x, self.y, self.width, self.height))
+    
+    def fight(self, enemy):
+      if self.strength > enemy.strength:
+        self.money += 10
+        return True
+      else:
+        return False
 
 class Enemy(object):
-    def __init__(self, x,y,width,height):
+    def __init__(self, x,y,width,height,name,strength):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.hitbox = (self.x + 20, self.y, 28, 60)
-        self.text = "Hello! Let's fight!"
+        self.name = name
+        self.strength = strength
+        self.text = "Hello!, It's "+ self.name +"! Let's fight!"
         self.textShown = False
 
     def draw(self, win):
