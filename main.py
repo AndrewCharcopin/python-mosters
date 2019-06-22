@@ -12,7 +12,6 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 480
-stage_num = 0
 
 def load_png(name):
     """ Load image and return image object"""
@@ -23,19 +22,38 @@ def load_png(name):
             image = image.convert()
         else:
             image = image.convert_alpha()
-#def redrawGameWindow(player, enemy):
-#    font = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
-#    ## display name and gold
-#    nameText = font.render(str(player.name), 1, (0,0,0))
-#    Display.blit(nameText, (380, 5))
-#    goldText = font.render('Gold: ' + str(player.money), 1, (0,0,0))
-#   Display.blit(goldText, (350, 20))
-#    
-#    enemy.draw(win)
-#    player.draw(win)
-#    
-#    pygame.display.update()
+    except pygame.error as message:
+        print('Cannot load image:'), fullname
+        raise SystemExit
+    return image
 
+# ---- draw!
+def redrawGameWindow(player, enemy):
+    font = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
+    ## display name and gold
+    nameText = font.render(str(player.name), 1, (0,0,0))
+    win.blit(nameText, (380, 5))
+    goldText = font.render('Gold: ' + str(player.money), 1, (0,0,0))
+    win.blit(goldText, (350, 20))
+    
+    enemy.draw(win)
+    player.draw(win)
+    
+    pygame.display.update()
+
+## not used for now
+class Room(object):
+    # wall_list = None
+    enemy_sprites = None
+    def __init__(self):
+        # self.wall_list = pygame.sprite.Group()
+        self.enemy_sprites = pygame.sprite.Group()
+
+##TODO Change room if player enter a door
+def createRoom(stage):
+    def __init__(self):
+        super().__init__()
+    room = Room()
 
 
 #win.blit(object, (x,y))
@@ -54,15 +72,11 @@ def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
 def main():
     StartScreen()
     player = Player(200, 410, PlayerInput())
-    enemies = {}
-    enemies["slime"] = Enemy(400, 410, 40, 40,"slime",30)
-    enemies["vampire"] = Enemy(400, 410, 40, 40, "vampire", 50)
-    enemies["franken"] = Enemy(400, 410, 40, 40, "franken", 120)
-   
+    enemy = Enemy(400, 410, 40, 40)
 
     run = True
     while run:
-        Display.blit(bg, (0,0))
+        win.blit(bg, (0,0))
         clock.tick(12)
         pygame.time.delay(10)
 
@@ -71,15 +85,6 @@ def main():
                 run = False
 
         # player-enemy interaction
-        # get enemy
-        global stage_num
-        if stage_num < 2:
-          enemy = enemies["slime"]
-        elif stage_num > 2 and stage_num < 5:
-          enemy = enemies["vampire"]
-        else:  
-          enemy = enemies["franken"]
-
         if abs(player.x - enemy.x) < 20:
             # lift enemy by 20
             enemy.y = 390
@@ -88,7 +93,6 @@ def main():
                 message_display("catch me if you can!", enemy.x, enemy.y-enemy.height)
                 enemy.x = random.randint(0, SCREEN_WIDTH)
                 player.money += 100
-                stage_num += 1
         else:
             textDisplayed = False
             enemy.y = 410
@@ -119,7 +123,7 @@ def main():
         if player.x > SCREEN_WIDTH:
             player.x = 200
 
-        #redrawGameWindow(player,enemy)
+        redrawGameWindow(player,enemy)
         
     pygame.quit()
     sys.exit()
