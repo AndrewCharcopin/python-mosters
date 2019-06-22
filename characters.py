@@ -33,6 +33,13 @@ class Player(object):
         #     self.walkCount += 1
 
         # pygame.draw.rect(win, (255,0,0), (self.x, self.y, self.width, self.height))
+    
+    def fight(self, enemy):
+      if self.strength > enemy.strength:
+        self.money += 10
+        return True
+      else:
+        return False
 
 class Enemy(object):
     def __init__(self, x,y,width,height,name,strength):

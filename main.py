@@ -65,7 +65,7 @@ def get_enemy():
 
   if stage_num < 2:
     return enemies["slime"]
-  elif stage_num > 2 and stage_num < 5:
+  elif stage_num >= 2 and stage_num < 5:
     return enemies["vampire"]
   else:
     return enemies["wolf"]
@@ -91,9 +91,15 @@ def main():
             enemy.y = 390
             if keys[pygame.K_SPACE]:
                 #display text
-                message_display("catch me if you can!", enemy.x, enemy.y-enemy.height)
-                enemy.x = random.randint(0, SCREEN_WIDTH)
-                player.money += 100
+                win_or_lose = player.fight(enemy)
+                print(win_or_lose)
+                print(enemy.name)
+                if win_or_lose:
+                  message_display("win!!!!")
+                else:
+                  message_display("lose!!!")  
+                global stage_num
+                stage_num += 1
         else:
             textDisplayed = False
             enemy.y = 410
