@@ -50,6 +50,8 @@ class Enemy(object):
         self.hitbox = (self.x + 20, self.y, 28, 60)
         self.name = name
         self.strength = strength
+        self.text = "Hello!, It's "+ self.name +"! Let's fight!"
+        self.textShown = False
 
     def draw(self, win):
         pygame.draw.rect(win, (255,255,0), (self.x, self.y, self.width, self.height))

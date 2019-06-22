@@ -29,6 +29,12 @@ def load_png(name):
         raise SystemExit
     return image
 
+def displayText(text, x=30, y=70):
+    font = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
+    textSurface = font.render(text, True, (255,255,255), (0,0,0))
+    win.blit(textSurface, (x, y))
+    pygame.display.update()
+
 # ---- draw!
 def redrawGameWindow(player, enemy):
     font = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
@@ -42,15 +48,21 @@ def redrawGameWindow(player, enemy):
     
     enemy.draw(win)
     player.draw(win)
-    
+
+    while enemy.textShown:
+        for event in pygame.event.get():
+            if event.type==pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        # if down is pressed, textshown = False
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_DOWN]:
+            enemy.textShown = False
+        pygame.draw.rect(win, (255, 0, 0), (20, 60, SCREEN_WIDTH-40, 100), 2)
+        #display text
+        displayText(enemy.text)
+
     pygame.display.update()
-
-
-#win.blit(object, (x,y))
-def text_objects(text, font):
-    # render(text, antialias, color, background=None) -> Surface
-    textSurface = font.render(text, True, (255,255,255), (0,0,0))
-    return textSurface, textSurface.get_rect()
 
 def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
     textFont = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
@@ -72,12 +84,17 @@ def get_enemy():
   else:
     return enemies["wolf"]
 
+    
 def main():
-    StartScreen()
+    # StartScreen()
     player = Player(200, 410, PlayerInput())
-
+    enemy = get_enemy()
+    textShown = False
+    text = ''
     run = True
+    
     while run:
+        keys = pygame.key.get_pressed()
         win.blit(bg, (0,0))
         clock.tick(12)
         pygame.time.delay(10)
@@ -92,16 +109,19 @@ def main():
             # lift enemy by 20
             enemy.y = 390
             if keys[pygame.K_SPACE]:
-                #display text
-                win_or_lose = player.fight(enemy)
-                print(win_or_lose)
-                print(enemy.name)
-                if win_or_lose:
-                  message_display("win!!!!")
-                  global stage_num
-                  stage_num += 1
-                else:
-                  message_display("lose!!!")  
+              #display text
+              enemy.textShown = True
+              text = enemy.text
+              win_or_lose = player.fight(enemy)
+              print(win_or_lose)
+              print(enemy.name)
+              if win_or_lose:
+                global stage_num
+                stage_num += 1
+                displayText("win!!", 80, 100)
+              else:
+                displayText("lose!!", 80, 100)
+                  
         else:
             textDisplayed = False
             enemy.y = 410
