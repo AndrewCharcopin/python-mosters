@@ -41,20 +41,6 @@ def redrawGameWindow(player, enemy):
     
     pygame.display.update()
 
-## not used for now
-class Room(object):
-    # wall_list = None
-    enemy_sprites = None
-    def __init__(self):
-        # self.wall_list = pygame.sprite.Group()
-        self.enemy_sprites = pygame.sprite.Group()
-
-##TODO Change room if player enter a door
-def createRoom(stage):
-    def __init__(self):
-        super().__init__()
-    room = Room()
-
 
 #win.blit(object, (x,y))
 def text_objects(text, font):
