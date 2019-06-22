@@ -23,6 +23,3 @@ Flowchart: https://drive.google.com/file/d/14nVAomSFOjzgUCL2G29L3WTkesIlg6ew/vie
 - pyenv local anaconda3-2019.03
 - python3 -m pip install -U pygame --user
 - python -m pygame.examples.aliens(動作確認)
-
-
->>>>>>> 65e8745d3694ed1aba40bfc12289523058a25a27
