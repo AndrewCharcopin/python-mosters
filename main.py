@@ -1,5 +1,6 @@
-import pygame, sys
+import pygame, sys, os
 import random, time
+#TODO Import ONLY modules
 from title import StartScreen, PlayerInput
 from characters import Player, Enemy
 
@@ -9,16 +10,22 @@ WHITE = (255,255,255)
 RED = (255,0,0)
 GREEN = (0,255,0)
 BLUE = (0,0,255)
-
-bg = pygame.image.load('assets/bg.jpg')
-
-pygame.init()
-
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 480
-win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Slime Game")
-clock = pygame.time.Clock()
+
+def load_png(name):
+    """ Load image and return image object"""
+    fullname = os.path.join('assets/images', name)
+    try:
+        image = pygame.image.load(fullname)
+        if image.get_alpha() is None:
+            image = image.convert()
+        else:
+            image = image.convert_alpha()
+    except pygame.error, message:
+        print 'Cannot load image:', fullname
+        raise SystemExit, message
+    return image
 
 # ---- draw!
 def redrawGameWindow(player, enemy):
@@ -120,6 +127,14 @@ def main():
         
     pygame.quit()
     sys.exit()
+
+Display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+pygame.init()
+
+pygame.display.set_caption("Slime Game")
+bg = load_png("bg.jpg")
+clock = pygame.time.Clock()
 
 if __name__ == "__main__":
     main()

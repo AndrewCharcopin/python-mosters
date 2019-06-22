@@ -116,8 +116,6 @@ def PlayerInput():
         pygame.display.flip()
         clock.tick(30)
 
-
-
 BLACK = (0,0,0)
 GREY = (180,180,180)
 WHITE = (255,255,255)
@@ -133,15 +131,15 @@ Display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 Font = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
 pygame.display.set_caption("Python Quest")
 
-music = pygame.mixer.music.load('assets/music.mp3')
-pygame.mixer.music.play(-1)
+# music = pygame.mixer.music.load('assets/music.mp3')
+# pygame.mixer.music.play(-1)
 
 clock = pygame.time.Clock()
+
 def main():
     StartScreen()
     PlayerInput()
 
-    Display.fill(RED)
     pygame.display.update()
     #quit game
     pygame.quit()
