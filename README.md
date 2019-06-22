@@ -25,4 +25,3 @@ Flowchart: https://drive.google.com/file/d/14nVAomSFOjzgUCL2G29L3WTkesIlg6ew/vie
 - python -m pygame.examples.aliens(動作確認)
 
 
->>>>>>> 65e8745d3694ed1aba40bfc12289523058a25a27
