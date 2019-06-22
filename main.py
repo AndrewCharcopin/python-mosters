@@ -23,7 +23,7 @@ def load_png(name):
         else:
             image = image.convert_alpha()
     except pygame.error as message:
-        print('Cannot load image:', fullname)
+
         raise SystemExit
     return image
 
@@ -40,20 +40,6 @@ def redrawGameWindow(player, enemy):
     player.draw(win)
     
     pygame.display.update()
-
-## not used for now
-class Room(object):
-    # wall_list = None
-    enemy_sprites = None
-    def __init__(self):
-        # self.wall_list = pygame.sprite.Group()
-        self.enemy_sprites = pygame.sprite.Group()
-
-##TODO Change room if player enter a door
-def createRoom(stage):
-    def __init__(self):
-        super().__init__()
-    room = Room()
 
 
 #win.blit(object, (x,y))
