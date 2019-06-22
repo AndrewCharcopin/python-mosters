@@ -73,13 +73,23 @@ def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
     pygame.display.update()
 
 def get_enemy(enemies):
+  dise = random.randint(1,6)
   if stage < 2:
     return enemies["slime"]
   elif stage >= 2 and stage < 5:
-    return enemies["vampire"]
+    print(str(dise) + " stage2")
+    if dise % 2 == 0:
+      return enemies["slime"]
+    else:
+      return enemies["vampire"]
   else:
-    return enemies["wolf"]
-
+    print(str(dise) + " stage3")
+    if dise == 1 or 6:
+      return enemies["slime"]
+    elif dise == 2 or 3:
+      return enemies["vampire"]
+    else:
+      return enemies["wolf"]
     
 def main():
     # StartScreen()
