@@ -12,8 +12,9 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 480
+stage = 0
 #count the wrap of stage
-stage_num = 0
+# stage = 0
 
 def load_png(name):
     """ Load image and return image object"""
@@ -43,7 +44,7 @@ def redrawGameWindow(player, enemy):
     win.blit(nameText, (380, 5))
     goldText = font.render('Gold: ' + str(player.money), 1, (0,0,0))
     win.blit(goldText, (350, 20))
-    stageText = font.render('Stage: ' + str(stage_num), 1, (0,0,0))
+    stageText = font.render('Stage: ' + str(stage), 1, (0,0,0))
     win.blit(stageText, (350, 35))
     
     enemy.draw(win)
@@ -72,9 +73,9 @@ def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
     pygame.display.update()
 
 def get_enemy(enemies):
-  if stage_num < 2:
+  if stage < 2:
     return enemies["slime"]
-  elif stage_num >= 2 and stage_num < 5:
+  elif stage >= 2 and stage < 5:
     return enemies["vampire"]
   else:
     return enemies["wolf"]
@@ -83,8 +84,9 @@ def get_enemy(enemies):
 def main():
     # StartScreen()
     player = Player(PlayerInput(), 100)
-    enemies = {"slime": Enemy("slime", 30), "vampire": Enemy("wolf", 60), "wolf": Enemy("slime", 110)}
-
+    enemies = {"slime": Enemy("slime", 30), "vampire": Enemy("vampire", 60), "wolf": Enemy("wolf", 110)}
+    global stage
+    stage = 0
 
     textShown = False
     text = ''
@@ -94,9 +96,9 @@ def main():
         clock.tick(12)
         pygame.time.delay(10)
 
-        # change background depending on stage_num
-        if len(bg_images) > stage_num:
-            bg = pygame.transform.scale(load_png(bg_images[stage_num]) ,(SCREEN_WIDTH, SCREEN_HEIGHT))
+        # change background depending on stage
+        if len(bg_images) > stage:
+            bg = pygame.transform.scale(load_png(bg_images[stage]) ,(SCREEN_WIDTH, SCREEN_HEIGHT))
         else:
             bg = pygame.transform.scale(load_png(bg_images[len(bg_images)-1]), (SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -112,15 +114,14 @@ def main():
             # lift enemy by 20
             enemy.y = 330
             if keys[pygame.K_SPACE]:
-              #display text
+              #display text, then fight
               enemy.textShown = True
               text = enemy.text
               fight_result = player.fight(enemy)
               print(fight_result)
               print(enemy.name)
               if fight_result:
-                global stage_num
-                stage_num += 1
+                stage += 1
                 player.x = player.startX
                 displayText("win!!", 80, 100)
               else:
