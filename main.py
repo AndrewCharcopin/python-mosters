@@ -1,7 +1,7 @@
 import pygame, sys, os
 import random, time
 #TODO Import ONLY modules
-from title import StartScreen, PlayerInput
+from title import StartScreen, PlayerInput, playSong, updateSong
 from characters import Player, Enemy
 from record import Record
 
@@ -14,8 +14,8 @@ BLUE = (0,0,255)
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 480
 stage = 0
-#count the wrap of stage
-# stage = 0
+songs = ['title_bgm.mp3', 'music.mp3']
+current_song = 0
 
 def load_png(name):
     """ Load image and return image object"""
@@ -40,7 +40,7 @@ def displayText(text, x=30, y=70):
 # ---- draw!
 def redrawGameWindow(player, enemy):
     font = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
-    ## display name and gold
+    ## display name, gold, stage
     nameText = font.render(str(player.name), 1, (0,0,0))
     win.blit(nameText, (380, 5))
     goldText = font.render('Gold: ' + str(player.money), 1, (0,0,0))
@@ -86,22 +86,16 @@ def get_enemy(enemies):
     else:
       return enemies["vampire"]
   else:
-    if dice == 1 or dice == 2:
-      return enemies["slime"]
-    elif dice == 3 or dice == 4:
-      return enemies["vampire"]
-    else:
-      return enemies["wolf"]
+    return enemies["wolf"]
     
 def main():
-    # StartScreen()
-    player = Player(PlayerInput(), 100)
+    StartScreen()
+    player = Player(PlayerInput(songs, current_song), 100)
+    # PlayIntro()
     enemies = {"slime": Enemy("slime", 30), "vampire": Enemy("vampire", 60), "wolf": Enemy("wolf", 110)}
     global stage
     stage = 0
-
     textShown = False
-    text = ''
     run = True
     
     while run:
@@ -128,7 +122,6 @@ def main():
             if keys[pygame.K_SPACE]:
               #display text, then fight
               enemy.textShown = True
-              text = enemy.text
               fight_result = player.fight(enemy)
               print(fight_result)
               print(enemy.name)
@@ -174,7 +167,7 @@ def main():
             player.x = 200
 
         redrawGameWindow(player,enemy)
-        
+
     pygame.quit()
     sys.exit()
 
@@ -182,13 +175,11 @@ win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 pygame.init()
 
-pygame.display.set_caption("Slime Game")
+pygame.display.set_caption("Python Quest")
 bg_images = ["bg.jpg", "back_field.jpeg", "back_castle.jpeg", "castle_back.png", "field_back.png"]
-
-
 
 # bg = pygame.image.load('assets/images/bg.jpg')
 clock = pygame.time.Clock()
-
 if __name__ == "__main__":
+    playSong(songs, current_song)
     main()

@@ -1,63 +1,81 @@
-import pygame,sys
+import pygame,sys,os
 from pygame.locals import*
 import time
 
+def playSong(songs, current_song):
+    pygame.mixer.music.stop()
+    pygame.mixer.init()
+    pygame.mixer.music.set_volume(0.5)
+    if pygame.mixer.music.get_busy() == False:
+        fullname = os.path.join('assets/sounds/', songs[current_song])
+        print(songs[current_song])
+        pygame.mixer.music.load(fullname)
+        pygame.mixer.music.play()
+
+def updateSong(songs, current_song):
+    pygame.mixer.music.stop()
+    if pygame.mixer.music.get_busy() == False:
+        fullname = os.path.join('assets/sounds/', songs[current_song])
+        pygame.mixer.music.load(fullname)
+        pygame.mixer.music.play()
+        print("Update song to ", songs[current_song])
+
 def StartScreen():
-        LEFT_CLICK = (1,0,0)
-        RIGHT_CLICK = (0,0,1)
+    LEFT_CLICK = (1,0,0)
+    RIGHT_CLICK = (0,0,1)
 
-        Display.fill(BLACK)
-        Title = Font.render("Python Quest",True,WHITE)
-        TitleRect = Title.get_rect()
-        TitleRect.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - TitleRect.height)
-        Display.blit(Title,TitleRect)
+    Display.fill(BLACK)
+    Title = Font.render("Python Quest",True,WHITE)
+    TitleRect = Title.get_rect()
+    TitleRect.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - TitleRect.height)
+    Display.blit(Title,TitleRect)
 
-        Coder = Font.render("by MASAKI",True,GREY)
-        CoderRect = Coder.get_rect()
-        CoderRect.center = (SCREEN_WIDTH/2,(SCREEN_HEIGHT/2))
-        Display.blit(Coder,CoderRect)
+    Coder = Font.render("by MASAKI",True,GREY)
+    CoderRect = Coder.get_rect()
+    CoderRect.center = (SCREEN_WIDTH/2,(SCREEN_HEIGHT/2))
+    Display.blit(Coder,CoderRect)
 
-        StartButton = Font.render("Start",True,WHITE)
-        StartRect = StartButton.get_rect()
-        StartRect.center = (SCREEN_WIDTH/2,(SCREEN_HEIGHT/2) + CoderRect.height + StartRect.height)
-        Display.blit(StartButton,StartRect)
+    StartButton = Font.render("Start",True,WHITE)
+    StartRect = StartButton.get_rect()
+    StartRect.center = (SCREEN_WIDTH/2,(SCREEN_HEIGHT/2) + CoderRect.height + StartRect.height)
+    Display.blit(StartButton,StartRect)
 
-        Start = True
+    Start = True
 
-        PreviousClick = (0,0,0)
+    PreviousClick = (0,0,0)
 
-        pygame.display.update()
-        pygame.time.Clock().tick(30) #30fps
+    pygame.display.update()
+    pygame.time.Clock().tick(30) #30fps
 
-        while Start:
-                for event in pygame.event.get():
-                        if event.type == QUIT:
-                                pygame.quit()
-                                sys.exit()
+    while Start:
+        for event in pygame.event.get():
+                if event.type == QUIT:
+                        pygame.quit()
+                        sys.exit()
 
-                        elif event.type == KEYDOWN:
-                                if (event.key == K_RETURN):
-                                                Start = False
+                elif event.type == KEYDOWN:
+                        if (event.key == K_RETURN):
+                                        Start = False
 
-                        elif event.type == MOUSEBUTTONDOWN:
-                                #left click
-                                PreviousClick = pygame.mouse.get_pressed()
-                                #if (pygame.mouse.get_pressed() == LEFT_CLICK):
-                                        #if(pygame.mouse.get_pos()[0] > StartRect.x and\
-                                           #pygame.mouse.get_pos()[0] < StartRect.x + StartRect.width and\
-                                           #pygame.mouse.get_pos()[1] > StartRect.y and\
-                                           #pygame.mouse.get_pos()[1] < StartRect.y + StartRect.height):
-                                                #Start = False
-                                                
-                        elif event.type == MOUSEBUTTONUP:
-                                if (PreviousClick == LEFT_CLICK):
-                                        if(pygame.mouse.get_pos()[0] > StartRect.x and\
-                                           pygame.mouse.get_pos()[0] < StartRect.x + StartRect.width and\
-                                           pygame.mouse.get_pos()[1] > StartRect.y and\
-                                           pygame.mouse.get_pos()[1] < StartRect.y + StartRect.height):
-                                                Start = False
+                elif event.type == MOUSEBUTTONDOWN:
+                        #left click
+                        PreviousClick = pygame.mouse.get_pressed()
+                        #if (pygame.mouse.get_pressed() == LEFT_CLICK):
+                                #if(pygame.mouse.get_pos()[0] > StartRect.x and\
+                                    #pygame.mouse.get_pos()[0] < StartRect.x + StartRect.width and\
+                                    #pygame.mouse.get_pos()[1] > StartRect.y and\
+                                    #pygame.mouse.get_pos()[1] < StartRect.y + StartRect.height):
+                                        #Start = False
+                                        
+                elif event.type == MOUSEBUTTONUP:
+                        if (PreviousClick == LEFT_CLICK):
+                                if(pygame.mouse.get_pos()[0] > StartRect.x and\
+                                    pygame.mouse.get_pos()[0] < StartRect.x + StartRect.width and\
+                                    pygame.mouse.get_pos()[1] > StartRect.y and\
+                                    pygame.mouse.get_pos()[1] < StartRect.y + StartRect.height):
+                                        Start = False
 
-def PlayerInput():
+def PlayerInput(songs, current_song):
     Display.fill(BLACK)
     Title = Font.render("Python Quest",True,WHITE)
     TitleRect = Title.get_rect()
@@ -96,6 +114,8 @@ def PlayerInput():
             if event.type == pygame.KEYDOWN:
                 if active:
                     if event.key == pygame.K_RETURN:
+                        current_song += 1
+                        updateSong(songs, current_song)
                         return text
                         break
                     elif event.key == pygame.K_BACKSPACE:
@@ -115,6 +135,7 @@ def PlayerInput():
 
         pygame.display.flip()
         clock.tick(30)
+    
 
 BLACK = (0,0,0)
 GREY = (180,180,180)
