@@ -3,6 +3,7 @@ import random, time
 #TODO Import ONLY modules
 from title import StartScreen, PlayerInput, playSong, updateSong
 from characters import Player, Enemy
+from record import Record
 
 BLACK = (0,0,0)
 GREY = (180,180,180)
@@ -72,11 +73,18 @@ def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
     win.blit(TextSurf, TextRect)
     pygame.display.update()
 
+#this is for getting an enemy at random
+def cast_dice():
+  return random.randint(1,6)
+
 def get_enemy(enemies):
   if stage < 2:
     return enemies["slime"]
   elif stage >= 2 and stage < 5:
-    return enemies["vampire"]
+    if dice % 2 == 0:
+      return enemies["slime"]
+    else:
+      return enemies["vampire"]
   else:
     return enemies["wolf"]
     
@@ -121,8 +129,12 @@ def main():
                 stage += 1
                 player.x = player.startX
                 displayText("win!!", 80, 100)
+                global dice
+                dice = cast_dice()
               else:
                 displayText("lost!!", 80, 100)
+                new_record = Record(player.name, stage)
+                new_record.write_csv()
                   
         else:
             textDisplayed = False
