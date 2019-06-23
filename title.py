@@ -18,7 +18,7 @@ def updateSong(songs, current_song):
         fullname = os.path.join('assets/sounds/', songs[current_song])
         pygame.mixer.music.load(fullname)
         pygame.mixer.music.play()
-        print("Update song to ", songs[current_song])
+        print("Update song to", songs[current_song])
 
 def StartScreen():
     LEFT_CLICK = (1,0,0)
