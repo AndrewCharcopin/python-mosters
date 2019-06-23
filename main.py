@@ -93,7 +93,7 @@ def main():
     StartScreen()
     player = Player(PlayerInput(songs, current_song), 100)
     # PlayIntro()
-    enemies = {"slime": Enemy("slime", 30), "vampire": Enemy("vampire", 60), "wolf": Enemy("wolf", 110)}
+    enemies = {"slime": Enemy("slime", 30, 10), "vampire": Enemy("vampire", 60, 20), "wolf": Enemy("wolf", 110, 30)}
     enemy = get_enemy(enemies)
 
     global stage
@@ -126,7 +126,7 @@ def main():
               enemy.textShown = True
               fight_result = player.fight(enemy)
               print(fight_result)
-              print(enemy.name)..,/.
+              print(enemy.name)
               if fight_result:
                 stage += 1
                 enemy = get_enemy(enemies)

@@ -53,7 +53,7 @@ class Player(object):
         return False
 
 class Enemy(object):
-    def __init__(self, name,strength, reward):
+    def __init__(self, name, strength, reward):
         self.x = 400
         self.y = 330
         self.width = 100
