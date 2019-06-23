@@ -44,16 +44,16 @@ class Player(object):
         #     self.walkCount += 1
 
         # pygame.draw.rect(win, (255,0,0), (self.x, self.y, self.width, self.height))
-    
+
     def fight(self, enemy):
       if self.strength > enemy.strength:
-        self.money += 10
+        self.money += enemy.reward
         return True
       else:
         return False
 
 class Enemy(object):
-    def __init__(self, name,strength):
+    def __init__(self, name,strength, reward):
         self.x = 400
         self.y = 350
         self.width = 100
@@ -65,6 +65,7 @@ class Enemy(object):
         self.textShown = False
         self.walkCount = 0
         self.images = self.getImages()
+        self.reward = reward
 
     def getImages(self):
         images = []
@@ -81,5 +82,3 @@ class Enemy(object):
         win.blit(self.images[self.walkCount//3], (self.x, self.y))
         self.walkCount = self.walkCount + 1
         # pygame.draw.rect(win, (255,255,0), (self.x, self.y, self.width, self.height))
-    
-

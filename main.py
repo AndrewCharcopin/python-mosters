@@ -46,7 +46,7 @@ def redrawGameWindow(player, enemy):
     win.blit(goldText, (350, 20))
     stageText = font.render('Stage: ' + str(stage), 1, (0,0,0))
     win.blit(stageText, (350, 35))
-    
+
     enemy.draw(win)
     player.draw(win)
 
@@ -80,18 +80,18 @@ def get_enemy(enemies):
   else:
     return enemies["wolf"]
 
-    
+
 def main():
     # StartScreen()
     player = Player(PlayerInput(), 100)
-    enemies = {"slime": Enemy("slime", 30), "vampire": Enemy("vampire", 60), "wolf": Enemy("wolf", 110)}
+    enemies = {"slime": Enemy("slime", 30, 10), "vampire": Enemy("vampire", 60, 20), "wolf": Enemy("wolf", 110, 30)}
     global stage
     stage = 0
 
     textShown = False
     text = ''
     run = True
-    
+
     while run:
         clock.tick(12)
         pygame.time.delay(10)
@@ -126,11 +126,11 @@ def main():
                 displayText("win!!", 80, 100)
               else:
                 displayText("lost!!", 80, 100)
-                  
+
         else:
             textDisplayed = False
             enemy.y = 340
-        
+
         # ---- key control
         keys = pygame.key.get_pressed()
 
@@ -158,7 +158,7 @@ def main():
             player.x = 200
 
         redrawGameWindow(player,enemy)
-        
+
     pygame.quit()
     sys.exit()
 
