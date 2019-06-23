@@ -55,7 +55,7 @@ class Player(object):
 class Enemy(object):
     def __init__(self, name,strength):
         self.x = 400
-        self.y = 350
+        self.y = 330
         self.width = 100
         self.height = 100
         self.hitbox = (self.x + 20, self.y, 28, 60)
