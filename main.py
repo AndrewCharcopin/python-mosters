@@ -3,6 +3,7 @@ import random, time
 #TODO Import ONLY modules
 from title import StartScreen, PlayerInput
 from characters import Player, Enemy
+from record import Record
 
 BLACK = (0,0,0)
 GREY = (180,180,180)
@@ -139,6 +140,8 @@ def main():
                 dice = cast_dice()
               else:
                 displayText("lost!!", 80, 100)
+                new_record = Record(player.name, stage)
+                new_record.write_csv()
                   
         else:
             textDisplayed = False
