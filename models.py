@@ -21,7 +21,7 @@ class Player(Model):
         pass
     def healHp():
         pass
-    
+
     
 class Enemy(Model):
     def __init__(self, phase):

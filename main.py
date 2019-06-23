@@ -3,6 +3,7 @@ import random, time
 #TODO Import ONLY modules
 from title import StartScreen, PlayerInput
 from characters import Player, Enemy
+from setting import *
 
 BLACK = (0,0,0)
 GREY = (180,180,180)
@@ -12,92 +13,56 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 480
+stage = 0
 
-def load_png(name):
-    """ Load image and return image object"""
-    fullname = os.path.join('assets/images', name)
-    try:
-        image = pygame.image.load(fullname)
-        if image.get_alpha() is None:
-            image = image.convert()
-        else:
-            image = image.convert_alpha()
-    except pygame.error as message:
-
-        raise SystemExit
-    return image
-
-def displayText(text):
-    font = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
-    textSurface = font.render(text, True, (255,255,255), (0,0,0))
-    win.blit(textSurface, (30, 30))
-    pygame.display.update()
-
-# ---- draw!
-def redrawGameWindow(player, enemy):
-    font = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
-    ## display name and gold
-    nameText = font.render(str(player.name), 1, (0,0,0))
-    win.blit(nameText, (380, 5))
-    goldText = font.render('Gold: ' + str(player.money), 1, (0,0,0))
-    win.blit(goldText, (350, 20))
-    
-    enemy.draw(win)
-    player.draw(win)
-
-    while enemy.textShown:
-        for event in pygame.event.get():
-            if event.type==pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-        # if down is pressed, textshown = False
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_DOWN]:
-            enemy.textShown = False
-        pygame.draw.rect(win, (255, 0, 0), (20, 20, SCREEN_WIDTH-40, 100), 2)
-        #display text
-        displayText(enemy.text)
-
-    pygame.display.update()
-
-# def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
-#     textFont = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
-#     TextSurf, TextRect = text_objects(text, textFont)
-#     TextRect.center = (x,y)
-#     win.blit(TextSurf, TextRect)
-#     pygame.display.update()
-    
 def main():
     # StartScreen()
-    player = Player(200, 410, PlayerInput())
-    enemy = Enemy(400, 410, 40, 40)
+    player = Player(PlayerInput(), 100)
+    slime = {"slime": Enemy("slime", 30)}
+    vampire = Enemy("vampire",60)
+    wolf = Enemy("wolf", 110)
+    enemies = {"slime": Enemy("slime", 30), "vampire": Enemy("vampire", 60), "wolf": Enemy("wolf", 110)}
+    global stage
+    stage = 0
     textShown = False
     text = ''
-
     run = True
     while run:
+        font = pygame.font.Font('assets/dragon-warrior-1.ttf',15)
         keys = pygame.key.get_pressed()
-        win.blit(bg, (0,0))
         clock.tick(12)
         pygame.time.delay(10)
-
+        # change background depending on stage
+        if len(bg_images) > stage:
+            bg = pygame.transform.scale(load_png(bg_images[stage]) ,(SCREEN_WIDTH, SCREEN_HEIGHT))
+        else:
+            bg = pygame.transform.scale(load_png(bg_images[len(bg_images)-1]), (SCREEN_WIDTH, SCREEN_HEIGHT))
+        win.blit(bg, (0,0))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-
         # player-enemy interaction
-        if abs(player.x - enemy.x) < 20:
+        enemy = get_enemy(enemies)
+        if abs(player.x - enemy.x) < 30:
             # lift enemy by 20
-            enemy.y = 390
-            if keys[pygame.K_SPACE]:
-                #display text
+            enemy.y = 330
+            strengthEnemyText = font.render('HP: ' + str(enemy.strength), 1, (0,0,0))
+            win.blit(strengthEnemyText, (0, 50))
+            if keys[pygame.K_RETURN]:
+                # display text, then fight
                 enemy.textShown = True
                 text = enemy.text
-            else:
-                enemy.y = 410
-        
-        # ---- key control
-        keys = pygame.key.get_pressed()
+                fight_result = player.fight(enemy)
+                if fight_result:
+                    enemy.strength = 100
+                    stage += 1
+                    enemy = get_enemy(enemies)
+                    enemy.textShown = False
+
+        else:
+            textDisplayed = False
+            enemy.y = 340
+
 
         if keys[pygame.K_LEFT] and player.x > player.vel:
             player.x -= player.vel
@@ -132,7 +97,10 @@ win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.init()
 
 pygame.display.set_caption("Slime Game")
-bg = load_png("bg.jpg")
+bg_images = ["bg.jpg", "back_field.jpeg", "back_castle.jpeg", "castle_back.png", "field_back.png"]
+
+
+
 # bg = pygame.image.load('assets/images/bg.jpg')
 clock = pygame.time.Clock()
 

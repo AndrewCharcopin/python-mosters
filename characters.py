@@ -1,10 +1,11 @@
-import pygame
-walk = [pygame.image.load('assets/slime/slime-move-0.png'),pygame.image.load('assets/slime/slime-move-1.png'),pygame.image.load('assets/slime/slime-move-2.png'),pygame.image.load('assets/slime/slime-move-3.png')]
-standing = [pygame.image.load('assets/slime/slime-idle-0.png'),pygame.image.load('assets/slime/slime-idle-1.png'),pygame.image.load('assets/slime/slime-idle-2.png'),pygame.image.load('assets/slime/slime-idle-3.png')]
+import pygame, os
+# walk = [pygame.image.load('assets/slime/slime-move-0.png'),pygame.image.load('assets/slime/slime-move-1.png'),pygame.image.load('assets/slime/slime-move-2.png'),pygame.image.load('assets/slime/slime-move-3.png')]
+# standing = [pygame.image.load('assets/slime/slime-idle-0.png'),pygame.image.load('assets/slime/slime-idle-1.png'),pygame.image.load('assets/slime/slime-idle-2.png'),pygame.image.load('assets/slime/slime-idle-3.png')]
 class Player(object):
-    def __init__(self, x,y, name):
+    def __init__(self,name, x,y=380):
         self.x = x
         self.y = y
+        self.startX = x
         self.width = 64
         self.height = 64
         self.name = name
@@ -14,6 +15,17 @@ class Player(object):
         self.standing = False
         self.walkCount = 0
         self.money = 100
+        self.strength = 100
+        self.images = self.getImages()
+
+    def getImages(self):
+        images = []
+        # Need 4 images!!
+        for i in range(4):
+            # e.g.) assets/images/enemies/wolf-0.png
+            fullname = os.path.join('assets/images/enemies/', 'slime-%s.png' %(i))
+            images.append(pygame.transform.scale(pygame.image.load(fullname), (self.width, self.height)))
+        return images
 
     def draw(self, win):
         # 3frame per image
@@ -21,10 +33,10 @@ class Player(object):
             self.walkCount = 0
         if not(self.standing):
             if self.left:
-                win.blit(walk[self.walkCount//3], (self.x, self.y))
+                win.blit(self.images[self.walkCount//3], (self.x, self.y))
                 self.walkCount += 1
             elif self.right:
-                win.blit(pygame.transform.flip(walk[self.walkCount//3], True, False), (self.x, self.y))
+                win.blit(pygame.transform.flip(self.images[self.walkCount//3], True, False), (self.x, self.y))
                 self.walkCount += 1
         # if idle images facing front exist
         # else:
@@ -33,17 +45,39 @@ class Player(object):
 
         # pygame.draw.rect(win, (255,0,0), (self.x, self.y, self.width, self.height))
 
+    def fight(self, enemy):
+        enemy.strength -= 1
+        origin_strength = enemy.strength
+        if enemy.strength < 0:
+            self.money += 10
+            enemy.strength = origin_strength
+            return True
+        else:
+            return False
+
 class Enemy(object):
-    def __init__(self, x,y,width,height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
+    def __init__(self,name,strength):
+        self.x = 400
+        self.y = 350
+        self.width = 100
+        self.height = 100
         self.hitbox = (self.x + 20, self.y, 28, 60)
-        self.text = "Hello! Let's fight!"
+        self.name = name
+        self.strength = strength
+        self.text = "Hello!, It's "+ self.name +"! Let's fight!"
         self.textShown = False
-        self.images = self.getImages()
         self.walkCount = 0
+        self.images = self.getImages()
+
+    def getImages(self):
+        images = []
+        # Need 4 images!!
+        for i in range(4):
+            # e.g.) assets/images/enemies/wolf-0.png
+            fullname = os.path.join('assets/images/enemies/', '%s-%s.png' %(self.name, i))
+            images.append(pygame.transform.scale(pygame.image.load(fullname), (self.width, self.height)))
+        return images
+
 
     def getImages(self):
         images = [pygame.image.load('assets/enemies/0.jpeg'), pygame.image.load('assets/enemies/1.jpeg'), pygame.image.load('assets/enemies/2.jpeg'), pygame.image.load('assets/enemies/3.jpeg')]
@@ -53,6 +87,6 @@ class Enemy(object):
         if self.walkCount + 1 >= 12:
             self.walkCount = 0
         win.blit(self.images[self.walkCount//3], (self.x, self.y))
-        self.walkCount += 1
+        self.walkCount = self.walkCount + 1
         # pygame.draw.rect(win, (255,255,0), (self.x, self.y, self.width, self.height))
 
