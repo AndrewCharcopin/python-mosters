@@ -14,7 +14,7 @@ BLUE = (0,0,255)
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 480
 stage = 0
-songs = ['title_bgm.mp3', 'music.mp3']
+songs = ['title_bgm.mp3', 'castle.mp3', 'music.mp3', 'boss.mp3']
 current_song = 0
 
 def load_png(name):
@@ -36,6 +36,7 @@ def displayText(text, x=30, y=70):
     textSurface = font.render(text, True, (255,255,255), (0,0,0))
     win.blit(textSurface, (x, y))
     pygame.display.update()
+    pygame.mixer.Channel(1).play(pygame.mixer.Sound('assets/sounds/text_displayed.wav'))
 
 # ---- draw!
 def redrawGameWindow(player, enemy):
@@ -75,16 +76,16 @@ def message_display(text, x = SCREEN_WIDTH//2, y = SCREEN_HEIGHT-100):
 
 #this is for getting an enemy at random
 def cast_dice():
-  return random.randint(1,6)
+    return random.randint(1,6)
 
 def get_enemy(enemies):
   if stage < 2:
     return enemies["slime"]
   elif stage >= 2 and stage < 5:
     if dice % 2 == 0:
-      return enemies["slime"]
+        return enemies["slime"]
     else:
-      return enemies["vampire"]
+        return enemies["vampire"]
   else:
     return enemies["wolf"]
     
@@ -93,6 +94,7 @@ def main():
     player = Player(PlayerInput(songs, current_song), 100)
     # PlayIntro()
     enemies = {"slime": Enemy("slime", 30), "vampire": Enemy("vampire", 60), "wolf": Enemy("wolf", 110)}
+    enemy = get_enemy(enemies)
     global stage
     stage = 0
     textShown = False
@@ -115,7 +117,6 @@ def main():
                 run = False
 
         # player-enemy interaction
-        enemy = get_enemy(enemies)
         if abs(player.x - enemy.x) < 30:
             # lift enemy by 20
             enemy.y = 330
@@ -127,6 +128,7 @@ def main():
               print(enemy.name)
               if fight_result:
                 stage += 1
+                enemy = get_enemy(enemies)
                 player.x = player.startX
                 displayText("win!!", 80, 100)
                 global dice
