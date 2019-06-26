@@ -1,4 +1,5 @@
 import pygame, os
+import random
 # walk = [pygame.image.load('assets/slime/slime-move-0.png'),pygame.image.load('assets/slime/slime-move-1.png'),pygame.image.load('assets/slime/slime-move-2.png'),pygame.image.load('assets/slime/slime-move-3.png')]
 # standing = [pygame.image.load('assets/slime/slime-idle-0.png'),pygame.image.load('assets/slime/slime-idle-1.png'),pygame.image.load('assets/slime/slime-idle-2.png'),pygame.image.load('assets/slime/slime-idle-3.png')]
 class Player(object):
@@ -15,7 +16,8 @@ class Player(object):
         self.standing = False
         self.walkCount = 0
         self.money = 100
-        self.strength = 100
+        self.strength = 20
+        self.hp = 120
         self.images = self.getImages()
 
     def getImages(self):
@@ -53,14 +55,12 @@ class Player(object):
         return False
 
 class Enemy(object):
-    def __init__(self, name,strength):
+    def __init__(self):
         self.x = 400
         self.y = 350
         self.width = 100
         self.height = 100
         self.hitbox = (self.x + 20, self.y, 28, 60)
-        self.name = name
-        self.strength = strength
         self.text = "Hello!, It's "+ self.name +"! Let's fight!"
         self.textShown = False
         self.walkCount = 0
@@ -81,5 +81,29 @@ class Enemy(object):
         win.blit(self.images[self.walkCount//3], (self.x, self.y))
         self.walkCount = self.walkCount + 1
         # pygame.draw.rect(win, (255,255,0), (self.x, self.y, self.width, self.height))
-    
+
+
+class Slime(Enemy):
+    def __init__(self):
+        self.name = "slime"
+        self.strength = 10
+        self.hp = 40
+        super().__init__()
+
+        
+
+        
+class Vampire(Enemy):
+    def __init__(self):
+        self.name = "vampire"
+        self.strength = 15
+        self.hp = 60
+        super().__init__()
+
+class Wolf(Enemy):
+    def __init__(self):
+        self.name = "Wolf"
+        self.strength = 20
+        self.hp = 80
+        super().__init__()
 

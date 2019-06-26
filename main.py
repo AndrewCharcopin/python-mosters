@@ -2,7 +2,7 @@ import pygame, sys, os
 import random, time
 #TODO Import ONLY modules
 from title import StartScreen, PlayerInput
-from characters import Player, Enemy
+from characters import Player, Enemy, Slime, Vampire, Wolf
 from record import Record
 
 BLACK = (0,0,0)
@@ -96,7 +96,7 @@ def get_enemy(enemies):
 def main():
     # StartScreen()
     player = Player(PlayerInput(), 100)
-    enemies = {"slime": Enemy("slime", 30), "vampire": Enemy("vampire", 60), "wolf": Enemy("wolf", 110)}
+    enemies = {"slime": Slime(), "vampire": Vampire(), "wolf": Wolf()}
     global stage
     stage = 0
 
