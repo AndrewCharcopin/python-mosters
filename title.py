@@ -50,4 +50,4 @@ def Title():
           elif event.key == pygame.K_BACKSPACE:
             name = name[:-1]
           else:
-            name += event.unicode
+            name += event.unicode 
