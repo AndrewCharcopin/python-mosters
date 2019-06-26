@@ -46,10 +46,10 @@ class Player(object):
         #     self.walkCount += 1
 
         # pygame.draw.rect(win, (255,0,0), (self.x, self.y, self.width, self.height))
-    
+
     def fight(self, enemy):
       if self.strength > enemy.strength:
-        self.money += 10
+        self.money += enemy.reward
         return True
       else:
         return False
@@ -57,7 +57,7 @@ class Player(object):
 class Enemy(object):
     def __init__(self):
         self.x = 400
-        self.y = 350
+        self.y = 330
         self.width = 100
         self.height = 100
         self.hitbox = (self.x + 20, self.y, 28, 60)
@@ -88,6 +88,7 @@ class Slime(Enemy):
         self.name = "slime"
         self.strength = 10
         self.hp = 40
+        self.reward = 10
         super().__init__()
 
         
@@ -98,6 +99,7 @@ class Vampire(Enemy):
         self.name = "vampire"
         self.strength = 15
         self.hp = 60
+        self.reward = 20
         super().__init__()
 
 class Wolf(Enemy):
@@ -105,5 +107,6 @@ class Wolf(Enemy):
         self.name = "Wolf"
         self.strength = 20
         self.hp = 80
+        self.reward = 30
         super().__init__()
 
