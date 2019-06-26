@@ -1,90 +1,72 @@
-""" Currently not being used """
+import pygame
+from setting import *
+from character import Slime
+from fight import *
 
-from models.py import *
-from title.py import *
-import random
+def Stage1(player):
+  pygame.init()
+  #setting variables
+  left = False
+  right = False
+  ready_fight_shown = False
 
-class Main():
-    def __init__(self):
-        # Open file if exsisted, otherwise make a file
-        self.file = open("record.txt, w")
-        # Load other necessary files e.g. sound, image
+  run = True
+  while run:
+    slime = Slime()
+    #initialize screen
+    screen.fill((30, 30, 30))
+    #draw background image
+    screen.blit(bg, (0,0))
+    #draw player
+    player_img = pygame.transform.flip(player.image, True, False) if right else player.image
+    player_size = player_img.get_rect()
+    screen.blit(player_img, (player.x, player.y))
+    #draw enemy
+    slime_img = slime.image
+    screen.blit(slime_img, (slime.x, slime.y))
+    #draw status
+    name_text = Font(14).render("player: " + player.name, True, BLACK)
+    gold_text = Font(14).render("gold: " + str(player.gold), True, BLACK)
+    stage_text = Font(14).render("stage: " + str(player.stage), True, BLACK)
+    name_size = name_text.get_rect()
+    gold_size = gold_text.get_rect()
+    stage_size = stage_text.get_rect()
+    screen.blit(name_text, (SCREEN_WIDTH - name_size.width, 0))
+    screen.blit(gold_text, (SCREEN_WIDTH - gold_size.width, 20))
+    screen.blit(stage_text, (SCREEN_WIDTH - stage_size.width, 40))
+    #ready fight screen
+    if ready_fight_shown:
+      explain_text = Font(14).render("press enter to start a fight ", True, BLACK)
+      explain_size = explain_text.get_rect()
+      screen.blit(explain_text, (SCREEN_WIDTH/2 - explain_size.width/2, SCREEN_HEIGHT/2))
 
-        self.init_game()
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+      if 0 < player.x and player.x:
+        player.x -= player.speed
+        left = True
+        right = False
+      else:
+        player.x
+    elif keys[pygame.K_RIGHT]:
+      if player.x < SCREEN_WIDTH - player_size.width:
+        player.x += player.speed
+        right = True
+        left = False
+      else:
+        player.x
 
-    def init_game(self):
-        # show title
-        self.game_state = TITLE
-        #Initialize phase. Increment every time player win.
-        self.phase = 0
+    if abs(player.x - slime.x) < 50:
+      ready_fight_shown = True
+      if keys[pygame.K_RETURN]:
+        Fight(player, slime)
+    else:
+      ready_fight_shown = False
 
-        #### Initialize Player ####
-        #load from file or initialize player
-        #if user chooses to load, open file. Or initialize player
-        i = input("Type player number to load, or type 0 to initialize.")
-        if(i == 0):
-            self.player = Player()
-        else:
-            # check if the player exists in record, then initialize player with the value
-            self.player = Player(file[i].status))
-        
-        #### King gives you 100 gold ####
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        run = False
 
-        self.game_state = ADVENTURE
-
-        #### Initialize enemy, Battle
-        enemy = Enemy()
-        b = Battle(player, enemy)
-        b.fight()
-        if(result == WIN):
-            b.win()
-        elif(result == LOSE):
-            b.lose()
-            
-
-        ##### ENTER LOOP ####
-        #choices: adventure, shop, lake 
-        while(True):
-            #Shop appears with 1/4 chance
-            shop = True if 1 == random.randint(4) else False
-            #Lake appears with 1/5 chance
-            lake = True if 1 == random.randint(5) else False
-            if(shop):
-                pass
-            elif(lake):
-                pass
-            #Battle
-            else:
-                b = Battle(player, enemy)
-
-
-        close(file)
-
-class Battle():
-    def __init__(self, player, enemy):
-        self.player = player
-        self.enemy = enemy
-    def fight(self):
-        result = None
-        if(self.player.status.hp > self.enemy.status.hp):
-            result = WIN
-        else:
-            result = LOST
-        return result
-
-    def win(self):
-        player.lvlup()
-        phase +=1
-
-    def lose(self):
-        record = {
-            phase: self.phase, playername: player.name, 
-            status:{"hp":player.status.hp, "mp":player.status.mp, "str": player.status.str, "vit":player.status.vit}, 
-            item:{player.items}, money:player.money
-            }
-        file.write(record)
-        
-    
-
-if __name__ == "__main__":
-    main()
+    #reload screen
+    pygame.display.flip()
+    clock.tick(60)
