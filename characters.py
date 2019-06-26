@@ -90,3 +90,10 @@ class Enemy(object):
         self.walkCount = self.walkCount + 1
         # pygame.draw.rect(win, (255,255,0), (self.x, self.y, self.width, self.height))
 
+class Skill(Player):
+    def __init__(self):
+        super.__init__()
+
+    def fire(self):
+        
+
