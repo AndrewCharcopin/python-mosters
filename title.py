@@ -30,7 +30,7 @@ def StartScreen():
     TitleRect.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - TitleRect.height)
     Display.blit(Title,TitleRect)
 
-    Coder = Font.render("by MASAKI",True,GREY)
+    Coder = Font.render("by Python Quest Association",True,GREY)
     CoderRect = Coder.get_rect()
     CoderRect.center = (SCREEN_WIDTH/2,(SCREEN_HEIGHT/2))
     Display.blit(Coder,CoderRect)
