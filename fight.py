@@ -2,7 +2,7 @@ import pygame
 from setting import *
 from character import *
 import random
-def Fight(player, enemy):
+def Fight(player, enemy, bg):
   pygame.init()
 
   select_dot_y = 80
@@ -62,7 +62,7 @@ def Fight(player, enemy):
     if enemy.hp == 0:
       result_text = Font(16).render("congrats, you won!!", True, RED)
       result_size = result_text.get_rect()
-      gold_text = Font(12).render("you got" + str(enemy.gold) + "gold", True, BLUE)
+      gold_text = Font(12).render("you got " + str(enemy.gold) + " gold", True, BLUE)
       gold_size = gold_text.get_rect()
       explain_text = Font(12).render("press enter to go to the next map", True, BLACK)
       explain_size = explain_text.get_rect()
