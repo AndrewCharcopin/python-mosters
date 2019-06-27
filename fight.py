@@ -21,13 +21,14 @@ def Fight(player, enemy, bg):
     player.x = 20
     player.y = SCREEN_HEIGHT - 50
     player_hp_text = Font(12).render("player HP: " + str(player.hp), True, BLACK)
-    screen.blit(player.image, (player.x, player.y))
+    player.draw(screen)
     screen.blit(player_hp_text, (0, 50))
     #draw enemy
     enemy.y = SCREEN_HEIGHT - 50
     enemy_hp_text = Font(12).render("enemy HP: " + str(enemy.hp), True, BLACK)
     enemy_hp_size = player_hp_text.get_rect()
-    screen.blit(enemy.image, (enemy.x, enemy.y))
+    enemy.draw(screen)
+    # screen.blit(enemy.image, (enemy.x, enemy.y))
     screen.blit(enemy_hp_text, (SCREEN_WIDTH - enemy_hp_size.width, 50))
     #draw battle
     title_text = Font(20).render("Fight!!", True, BLACK)

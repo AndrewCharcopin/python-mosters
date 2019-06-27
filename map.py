@@ -6,8 +6,6 @@ from fight import *
 class Stage():
   def __init__(self, player):
     pygame.init()
-    player.left = False
-    player.right = False
     self.bg = bg
     self.ready_fight_shown = False
     self.assign_Enemy_Bg(player)
@@ -23,7 +21,6 @@ class Stage():
       self.bg = pygame.transform.scale(pygame.image.load("assets/images/castle_bg.png") ,(SCREEN_WIDTH, SCREEN_HEIGHT))
       self.enemy = Budda()
 
-
   def go(self, player):
     run = True
     while run:
@@ -33,12 +30,10 @@ class Stage():
       #draw background image
       screen.blit(self.bg, (0,0))
       #draw player
-      player_img = pygame.transform.flip(player.image, True, False) if player.right else player.image
-      player_size = player_img.get_rect()
-      screen.blit(player_img, (player.x, player.y))
+      player.draw(screen)
       #draw enemy
-      enemy_img = enemy.image
-      screen.blit(enemy_img, (enemy.x, enemy.y))
+      enemy.draw(screen)
+
       #draw status
       name_text = Font(14).render("player: " + player.name, True, BLACK)
       gold_text = Font(14).render("gold: " + str(player.gold), True, BLACK)
@@ -64,7 +59,7 @@ class Stage():
         else:
           player.x
       elif keys[pygame.K_RIGHT]:
-        if player.x < SCREEN_WIDTH - player_size.width:
+        if player.x < SCREEN_WIDTH - player.rect.width:
           player.x += player.speed
           player.right = True
           player.left = False
@@ -85,4 +80,4 @@ class Stage():
 
       #reload screen
       pygame.display.flip()
-      clock.tick(60)
+      clock.tick(30)

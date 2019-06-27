@@ -23,6 +23,9 @@ YELLOW = (255,255,0)
 #setting images
 bg = pygame.image.load("assets/images/bg.jpg")
 
+#setting player images
+player_img = [pygame.image.load('assets/slime/slime-move-0.png'),pygame.image.load('assets/slime/slime-move-1.png'),pygame.image.load('assets/slime/slime-move-2.png'),pygame.image.load('assets/slime/slime-move-3.png')]
+
 #setting others
 clock = pygame.time.Clock()
 keys = pygame.key.get_pressed()
