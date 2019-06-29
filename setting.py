@@ -9,7 +9,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_WIDTH))
 
 #setting font to use
 def Font(num):
-  return pygame.font.Font('assets/dragon-warrior-1.ttf', num)
+  return pygame.font.Font('assets/fonts/dragon-warrior-1.ttf', num)
 
 #setting colors
 BLACK = (0,0,0)
@@ -20,10 +20,25 @@ GREEN = (0,255,0)
 BLUE = (0,0,255)
 YELLOW = (255,255,0)
 
-#setting images
-bg = pygame.image.load("assets/images/bg.jpg")
+#bg
+def Bg(num):
+  if num == 1:
+    img = pygame.image.load("assets/images/items/bg.jpg")
+    return Transform(img, 500,500)
+  elif num == 2:
+    img = pygame.image.load("assets/images/items/castle_back.png")
+    return Transform(img, 500,500)
+  elif num == 3:
+    img = pygame.image.load("assets/images/items/field_back.png")
+    return Transform(img, 500,500)
+
+def Transform(item, width, height):
+  return pygame.transform.scale(item, (width, height))
 
 #setting others
 clock = pygame.time.Clock()
 keys = pygame.key.get_pressed()
 pygame.display.set_caption("Python Monsters") 
+
+#path
+enemy_path = "assets/images/enemies/"

@@ -1,4 +1,4 @@
-import pygame,sys
+import pygame
 from setting import *
 
 def Title():
@@ -31,7 +31,7 @@ def Title():
 
     #reload screen
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(30)
 
     #keyboard click control
     for event in pygame.event.get():
