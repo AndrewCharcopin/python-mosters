@@ -1,8 +1,0 @@
-##record data when player loses
-##if user chooses to load from record by specifying data No., player inherit some of its status
-data = {
-1:{phase: int, playername, status:{"hp":int, "mp":int, "str": int, "vit":int}, item:{str}, money:int}
-2:{phase: int, playername, status:{"hp":int, "mp":int, "str": int, "vit":int}, item:{str}, money:int}
-3:{phase: int, playername, status:{"hp":int, "mp":int, "str": int, "vit":int}, item:{str}, money:int}
-4:{phase: int, playername, status:{"hp":int, "mp":int, "str": int, "vit":int}, item:{str}, money:int}
-}
