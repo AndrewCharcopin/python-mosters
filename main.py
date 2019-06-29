@@ -11,5 +11,9 @@ def main():
     Stage(player)
     Fight(player)
 
+  for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        run = False
+
 if __name__ == "__main__":
   main()
