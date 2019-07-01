@@ -11,6 +11,8 @@ def Fight(player):
   elif player.stage == 2:
     enemy = Dracula()
   elif player.stage == 3:
+    enemy = Vampire()
+  elif player.stage == 4:
     enemy = Wolf()
 
   select_dot_y = 80
