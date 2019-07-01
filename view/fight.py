@@ -1,9 +1,19 @@
 import pygame
 from setting import *
-from character import *
+from controller.character import *
 import random
-def Fight(player, enemy):
+
+def Fight(player):
   pygame.init()
+
+  if player.stage == 1:
+    enemy = Slime()
+  elif player.stage == 2:
+    enemy = Dracula()
+  elif player.stage == 3:
+    enemy = Vampire()
+  elif player.stage == 4:
+    enemy = Wolf()
 
   select_dot_y = 80
   fire = Fire()
@@ -16,18 +26,18 @@ def Fight(player, enemy):
     #initialize screen
     screen.fill((30, 30, 30))
     #draw background image
-    screen.blit(bg, (0,0))
+    screen.blit(Bg(player.stage), (0,0))
     #draw player
     player.x = 20
     player.y = SCREEN_HEIGHT - 50
     player_hp_text = Font(12).render("player HP: " + str(player.hp), True, BLACK)
-    screen.blit(player.image, (player.x, player.y))
+    player.draw(screen)
     screen.blit(player_hp_text, (0, 50))
     #draw enemy
     enemy.y = SCREEN_HEIGHT - 50
     enemy_hp_text = Font(12).render("enemy HP: " + str(enemy.hp), True, BLACK)
     enemy_hp_size = player_hp_text.get_rect()
-    screen.blit(enemy.image, (enemy.x, enemy.y))
+    enemy.draw(screen)
     screen.blit(enemy_hp_text, (SCREEN_WIDTH - enemy_hp_size.width, 50))
     #draw battle
     title_text = Font(20).render("Fight!!", True, BLACK)
@@ -62,7 +72,7 @@ def Fight(player, enemy):
     if enemy.hp == 0:
       result_text = Font(16).render("congrats, you won!!", True, RED)
       result_size = result_text.get_rect()
-      gold_text = Font(12).render("you got" + str(enemy.gold) + "gold", True, BLUE)
+      gold_text = Font(12).render("you got " + str(enemy.gold) + " gold", True, BLUE)
       gold_size = gold_text.get_rect()
       explain_text = Font(12).render("press enter to go to the next map", True, BLACK)
       explain_size = explain_text.get_rect()

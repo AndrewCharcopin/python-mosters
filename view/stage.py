@@ -1,29 +1,30 @@
 import pygame
 from setting import *
-from character import Slime
-from fight import *
+from controller.character import *
 
-def Stage1(player):
+def Stage(player):
   pygame.init()
   #setting variables
-  left = False
-  right = False
   ready_fight_shown = False
+  if player.stage == 1:
+    enemy = Slime()
+  elif player.stage == 2:
+    enemy = Dracula()
+  elif player.stage == 3:
+    enemy = Vampire()
+  elif player.stage == 4:
+    enemy = Wolf()
 
   run = True
   while run:
-    slime = Slime()
     #initialize screen
     screen.fill((30, 30, 30))
     #draw background image
-    screen.blit(bg, (0,0))
+    screen.blit(Bg(player.stage), (0,0))
     #draw player
-    player_img = pygame.transform.flip(player.image, True, False) if right else player.image
-    player_size = player_img.get_rect()
-    screen.blit(player_img, (player.x, player.y))
+    player.draw(screen)
     #draw enemy
-    slime_img = slime.image
-    screen.blit(slime_img, (slime.x, slime.y))
+    enemy.draw(screen)
     #draw status
     name_text = Font(14).render("player: " + player.name, True, BLACK)
     gold_text = Font(14).render("gold: " + str(player.gold), True, BLACK)
@@ -44,22 +45,22 @@ def Stage1(player):
     if keys[pygame.K_LEFT]:
       if 0 < player.x and player.x:
         player.x -= player.speed
-        left = True
-        right = False
+        player.left = True
+        player.right = False
       else:
         player.x
     elif keys[pygame.K_RIGHT]:
-      if player.x < SCREEN_WIDTH - player_size.width:
+      if player.x < SCREEN_WIDTH - player.rect.width:
         player.x += player.speed
-        right = True
-        left = False
+        player.right = True
+        player.left = False
       else:
         player.x
 
-    if abs(player.x - slime.x) < 50:
+    if abs(player.x - enemy.x) < 50:
       ready_fight_shown = True
       if keys[pygame.K_RETURN]:
-        Fight(player, slime)
+        return player, enemy
     else:
       ready_fight_shown = False
 
@@ -69,4 +70,4 @@ def Stage1(player):
 
     #reload screen
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(30)
