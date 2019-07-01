@@ -31,6 +31,9 @@ def Bg(num):
   elif num == 3:
     img = pygame.image.load("assets/images/items/field_back.png")
     return Transform(img, 500,500)
+  else:
+    img = pygame.image.load("assets/images/items/bg.jpg")
+    return Transform(img, 500,500)
 
 def Transform(item, width, height):
   return pygame.transform.scale(item, (width, height))
