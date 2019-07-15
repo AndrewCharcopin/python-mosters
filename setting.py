@@ -41,7 +41,8 @@ def Transform(item, width, height):
 #setting others
 clock = pygame.time.Clock()
 keys = pygame.key.get_pressed()
-pygame.display.set_caption("Python Monsters") 
+pygame.display.set_caption("Python Monsters")
 
 #path
 enemy_path = "assets/images/enemies/"
+

@@ -29,12 +29,12 @@ def Fight(player):
     screen.blit(Bg(player.stage), (0,0))
     #draw player
     player.x = 20
-    player.y = SCREEN_HEIGHT - 50
+    player.draw(screen)
     player_hp_text = Font(12).render("player HP: " + str(player.hp), True, BLACK)
     player.draw(screen)
     screen.blit(player_hp_text, (0, 50))
     #draw enemy
-    enemy.y = SCREEN_HEIGHT - 50
+    enemy.draw(screen)
     enemy_hp_text = Font(12).render("enemy HP: " + str(enemy.hp), True, BLACK)
     enemy_hp_size = player_hp_text.get_rect()
     enemy.draw(screen)
@@ -114,4 +114,4 @@ def Fight(player):
 
     #reload screen
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(30)

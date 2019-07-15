@@ -15,6 +15,7 @@ class Player():
     self.right = True
     self.left = False
     self.walkCount = 0
+    self.status = 0
 
   def draw(self, screen):
     if self.walkCount + 1 >= 12:
@@ -32,6 +33,7 @@ class Enemy():
     self.y = SCREEN_WIDTH - rect.height - 20
     self.rect = rect
     self.walkCount = 0
+    self.status = 0
 
   def draw(self, screen):
     if self.walkCount + 1 >= 12:
