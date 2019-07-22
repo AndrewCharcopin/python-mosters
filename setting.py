@@ -45,4 +45,3 @@ pygame.display.set_caption("Python Monsters")
 
 #path
 enemy_path = "assets/images/enemies/"
-

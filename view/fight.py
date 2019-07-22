@@ -15,6 +15,10 @@ def Fight(player):
   elif player.stage == 4:
     enemy = Wolf()
 
+  pygame.mixer.init()
+  pygame.mixer.music.load('assets/sounds/boss.mp3')
+  pygame.mixer.music.play(-1)
+
   select_dot_y = 80
   fire = Fire()
   thunder = Thunder()
@@ -29,15 +33,13 @@ def Fight(player):
     screen.blit(Bg(player.stage), (0,0))
     #draw player
     player.x = 20
-    player.draw(screen)
+    player.draw()
     player_hp_text = Font(12).render("player HP: " + str(player.hp), True, BLACK)
-    player.draw(screen)
     screen.blit(player_hp_text, (0, 50))
     #draw enemy
-    enemy.draw(screen)
+    enemy.draw()
     enemy_hp_text = Font(12).render("enemy HP: " + str(enemy.hp), True, BLACK)
     enemy_hp_size = player_hp_text.get_rect()
-    enemy.draw(screen)
     screen.blit(enemy_hp_text, (SCREEN_WIDTH - enemy_hp_size.width, 50))
     #draw battle
     title_text = Font(20).render("Fight!!", True, BLACK)
@@ -59,15 +61,25 @@ def Fight(player):
     fire_skill = Font(16).render(fire.name + "!!", True, BLACK)
     thunder_skill = Font(16).render(thunder.name + "!!", True, BLACK)
     aqua_skill = Font(16).render(aqua.name + "!!", True, BLACK)
-    if player_skill == 1:
-      screen.blit(fire_skill, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 80))
-      screen.blit(fire_damage, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 100))
-    elif player_skill == 2:
-      screen.blit(thunder_skill, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 80))
-      screen.blit(thunder_damage, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 100))
-    elif player_skill == 3:
-      screen.blit(aqua_skill, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 80))
-      screen.blit(aqua_damage, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 100))
+    if player.status == 1:
+      if player.skill == 1:
+        player.attack()
+      elif player_skill == 2:
+        screen.blit(thunder_skill, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 80))
+        screen.blit(thunder_damage, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 100))
+      elif player_skill == 3:
+        screen.blit(aqua_skill, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 80))
+        screen.blit(aqua_damage, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 100))
+    elif enemy.status == 1:
+      if player_skill == 1:
+        screen.blit(fire_skill, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 80))
+        screen.blit(fire_damage, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 100))
+      elif player_skill == 2:
+        screen.blit(thunder_skill, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 80))
+        screen.blit(thunder_damage, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 100))
+      elif player_skill == 3:
+        screen.blit(aqua_skill, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 80))
+        screen.blit(aqua_damage, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 100))
 
     if enemy.hp == 0:
       result_text = Font(16).render("congrats, you won!!", True, RED)
@@ -84,28 +96,32 @@ def Fight(player):
       if event.type == pygame.QUIT:
         run = False
       if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_UP and select_dot_y < 80:
-          select_dot_y += 20
-        if event.key == pygame.K_DOWN and select_dot_y > 40:
-          select_dot_y -= 20
-        if event.key == pygame.K_RETURN and select_dot_y == 80:
-          player_skill = 1
-          if enemy.hp < fire.damage:
-            enemy.hp = 0
-          else:
-            enemy.hp -= fire.damage
-        if event.key == pygame.K_RETURN and select_dot_y == 60:
-          player_skill = 2
-          if enemy.hp < thunder.damage:
-            enemy.hp = 0
-          else:
-            enemy.hp -= thunder.damage
-        if event.key == pygame.K_RETURN and select_dot_y == 40:
-          player_skill = 3
-          if enemy.hp < aqua.damage:
-            enemy.hp = 0
-          else:
-            enemy.hp -= aqua.damage
+        if player.status == 1:
+          if event.key == pygame.K_UP and select_dot_y < 80:
+            select_dot_y += 20
+          if event.key == pygame.K_DOWN and select_dot_y > 40:
+            select_dot_y -= 20
+          if event.key == pygame.K_RETURN and select_dot_y == 80:
+            player.skill = 1
+            if enemy.hp < fire.damage:
+              enemy.hp = 0
+            else:
+              enemy.hp -= fire.damage
+          if event.key == pygame.K_RETURN and select_dot_y == 60:
+            player.skill = 2
+            if enemy.hp < thunder.damage:
+              enemy.hp = 0
+            else:
+              enemy.hp -= thunder.damage
+          if event.key == pygame.K_RETURN and select_dot_y == 40:
+            player.skill = 3
+            if enemy.hp < aqua.damage:
+              enemy.hp = 0
+            else:
+              enemy.hp -= aqua.damage
+        elif enemy.status == 1:
+          return
+
         if event.key == pygame.K_RETURN and done == True:
           player_skill = 0
           player.gold += enemy.gold

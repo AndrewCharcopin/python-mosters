@@ -16,8 +16,9 @@ class Player():
     self.left = False
     self.walkCount = 0
     self.status = 0
+    self.skill = 0
 
-  def draw(self, screen):
+  def draw(self):
     if self.walkCount + 1 >= 12:
       self.walkCount = 0
     if self.left:
@@ -27,6 +28,21 @@ class Player():
       screen.blit(pygame.transform.flip(self.images[self.walkCount//3], True, False), (self.x, self.y))
       self.walkCount += 1
 
+  def attack(self):
+    text = Font(14).render("Attack: " + str(self.stage * 10), True, BLACK)
+    screen.blit(text, (20, SCREEN_HEIGHT/2 - 80))
+    self.skill = 1
+
+  def barrier(self):
+    text = Font(14).render("Barrier!", True, BLACK)
+    screen.blit(text, (20, SCREEN_HEIGHT/2 - 80))
+    self.skill = 2
+
+  def charge(self):
+    text = Font(14).render("Charge!", True, BLACK)
+    screen.blit(text, (20, SCREEN_HEIGHT/2 - 80))
+    self.skill = 3
+
 class Enemy():
   def __init__(self,rect):
     self.x = SCREEN_WIDTH - rect.width - 20
@@ -34,12 +50,25 @@ class Enemy():
     self.rect = rect
     self.walkCount = 0
     self.status = 0
+    self.skill = 0
 
-  def draw(self, screen):
+  def draw(self):
     if self.walkCount + 1 >= 12:
       self.walkCount = 0
     screen.blit(self.images[self.walkCount//3], (self.x, self.y))
     self.walkCount += 1
+
+  def attack(self):
+    text = Font(14).render("Attack: " + str(self.stage * 10), True, BLACK)
+    screen.blit(text, (20, SCREEN_HEIGHT/2 - 80))
+
+  def barrier(self):
+    text = Font(14).render("Barrier!", True, BLACK)
+    screen.blit(text, (20, SCREEN_HEIGHT/2 - 80))
+
+  def charge(self):
+    text = Font(14).render("Charge!", True, BLACK)
+    screen.blit(text, (20, SCREEN_HEIGHT/2 - 80))
 
 class Slime(Enemy):
   def __init__(self):
@@ -91,3 +120,5 @@ class Aqua():
   def __init__(self):
     self.name = "aqua"
     self.damage = 20
+
+

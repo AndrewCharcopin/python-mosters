@@ -14,6 +14,10 @@ def Stage(player):
     enemy = Vampire()
   elif player.stage == 4:
     enemy = Wolf()
+  #music
+  pygame.mixer.init()
+  pygame.mixer.music.load('assets/sounds/castle.mp3')
+  pygame.mixer.music.play(-1)
 
   run = True
   while run:
@@ -22,9 +26,9 @@ def Stage(player):
     #draw background image
     screen.blit(Bg(player.stage), (0,0))
     #draw player
-    player.draw(screen)
+    player.draw()
     #draw enemy
-    enemy.draw(screen)
+    enemy.draw()
     #draw status
     name_text = Font(14).render("player: " + player.name, True, BLACK)
     gold_text = Font(14).render("gold: " + str(player.gold), True, BLACK)
