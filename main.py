@@ -3,6 +3,7 @@ from view.title import Title
 from view.stage import Stage
 from view.fight import Fight
 from controller.character import Player
+from view.animation import StartScreen, Prince, EndScreen
 
 
 def main():
@@ -10,6 +11,10 @@ def main():
   while player.stage < 5:
     Stage(player)
     Fight(player)
+  else:
+    Prince(player)
+    EndScreen()
+    StartScreen()
 
   for event in pygame.event.get():
     if event.type == pygame.QUIT:

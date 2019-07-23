@@ -1,4 +1,6 @@
 import pygame
+import pygame, sys
+from pygame.locals import*
 
 pygame.init()
 
@@ -37,6 +39,15 @@ def Bg(num):
 
 def Transform(item, width, height):
   return pygame.transform.scale(item, (width, height))
+
+def write_csv(name, stage):
+  import csv, time
+  now = time.ctime()
+  cnvtime = time.strptime(now)
+  time.strftime("%Y/%m/%d %H:%M", cnvtime) 
+  with open('./record.csv','a') as f:
+    writer = csv.writer(f)
+    writer.writerow([time.strftime("%Y/%m/%d %H:%M", cnvtime) , name, stage])
 
 #setting others
 clock = pygame.time.Clock()
