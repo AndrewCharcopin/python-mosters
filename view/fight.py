@@ -30,7 +30,10 @@ def Fight(player):
 		#draw player
 		player.x = 20
 		player.draw()
-		player_hp_text = Font(12).render("HP: " + str(player.hp), True, BLACK)
+		if player.hp > 0:
+			player_hp_text = Font(12).render("HP: " + str(player.hp), True, BLACK)
+		else:
+			player_hp_text = Font(12).render("player: DEAD", True, BLACK)
 		player_charge_text = Font(12).render("Attack: " + str(player.power * player.charge), True, BLACK)
 		screen.blit(player_hp_text, (0, 50))
 		screen.blit(player_charge_text, (0, 30))

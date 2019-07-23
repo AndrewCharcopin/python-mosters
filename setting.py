@@ -50,10 +50,22 @@ def Write_csv(player):
   import csv, time
   now = time.ctime()
   cnvtime = time.strptime(now)
-  time.strftime("%Y/%m/%d %H:%M", cnvtime) 
-  with open('./record.csv','a') as f:
-    writer = csv.writer(f)
-    writer.writerow([time.strftime("%Y/%m/%d %H:%M", cnvtime) , player.name, player.stage])
+  time.strftime("%Y/%m/%d %H:%M", cnvtime)
+  file_name = './record.csv'
+  try:
+    f = open(file_name)
+  except IndexError:
+    print ('Usage: %s TEXTFILE' % file_name)
+  except IOError:
+    print ('"%s" cannot be opened.' % file_name)
+  else:
+    with open(file_name,'a') as f:
+      writer = csv.writer(f)
+      writer.writerow([time.strftime("%Y/%m/%d %H:%M", cnvtime) , player.name, player.stage])
+    f.close()
+  finally:
+    print ('n"%s" process end.' % file_name)
+
 
 #setting others
 clock = pygame.time.Clock()
