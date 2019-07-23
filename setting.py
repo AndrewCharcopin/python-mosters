@@ -46,14 +46,14 @@ def Bg(num):
 def Transform(item, width, height):
   return pygame.transform.scale(item, (width, height))
 
-def write_csv(name, stage):
+def Write_csv(player):
   import csv, time
   now = time.ctime()
   cnvtime = time.strptime(now)
   time.strftime("%Y/%m/%d %H:%M", cnvtime) 
   with open('./record.csv','a') as f:
     writer = csv.writer(f)
-    writer.writerow([time.strftime("%Y/%m/%d %H:%M", cnvtime) , name, stage])
+    writer.writerow([time.strftime("%Y/%m/%d %H:%M", cnvtime) , player.name, player.stage])
 
 #setting others
 clock = pygame.time.Clock()
