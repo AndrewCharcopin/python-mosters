@@ -7,7 +7,7 @@ def Prince(player):
 	images = [pygame.image.load(enemy_path + 'slime/slime-move-0.png'),pygame.image.load(enemy_path + 'slime/slime-move-1.png'),pygame.image.load(enemy_path + 'slime/slime-move-2.png'),pygame.image.load(enemy_path + 'slime/slime-move-3.png')]
 
 	pygame.mixer.init()
-	pygame.mixer.music.load('assets/sounds/music.mp3')
+	pygame.mixer.music.load('assets/sounds/clear.mp3')
 	pygame.mixer.music.play(-1)
 
 	prince_name = Font(20).render("PRINCE",True,WHITE)
@@ -40,7 +40,7 @@ def Prince(player):
 			run = False
 		pygame.display.flip()
 		clock.tick(30)
-
+	
 def EndScreen():
 	# title_font = Font(25)
 	LEFT_CLICK = (1,0,0)
@@ -93,7 +93,7 @@ def EndScreen():
 				if (event.key == K_RETURN):
 					Start = False
 			elif event.type == MOUSEBUTTONDOWN:
-				PreviousClick = pygame.mouse.get_pressed()
+				PreviousClick = pygame.mouse.get_pressed()						
 			elif event.type == MOUSEBUTTONUP:
 				if (PreviousClick == LEFT_CLICK):
 					if(pygame.mouse.get_pos()[0] > StartRect.x and\
@@ -157,7 +157,7 @@ def StartScreen():
 				if (event.key == K_RETURN):
 					Start = False
 			elif event.type == MOUSEBUTTONDOWN:
-				PreviousClick = pygame.mouse.get_pressed()
+				PreviousClick = pygame.mouse.get_pressed()						
 			elif event.type == MOUSEBUTTONUP:
 				if (PreviousClick == LEFT_CLICK):
 					if(pygame.mouse.get_pos()[0] > StartRect.x and\

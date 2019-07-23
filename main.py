@@ -7,6 +7,7 @@ from view.animation import StartScreen, Prince, EndScreen
 
 
 def main():
+  StartScreen()
   player = Player(Title())
   while player.stage < 5:
     Stage(player)
@@ -14,7 +15,6 @@ def main():
   else:
     Prince(player)
     EndScreen()
-    StartScreen()
 
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
