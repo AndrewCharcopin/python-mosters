@@ -85,8 +85,7 @@ def Fight(player):
 			screen.blit(gold_text, (SCREEN_WIDTH/2 - gold_size.width/2, SCREEN_HEIGHT/2 + 80))
 			screen.blit(explain_text, (SCREEN_WIDTH/2 - explain_size.width/2, SCREEN_HEIGHT/2 + 100))
 			done = True
-
-		if player.hp <= 0:
+		elif player.hp <= 0:
 			result_text = Font(16).render("Ohhh, you lost...", True, RED)
 			result_size = result_text.get_rect()
 			explain_text = Font(12).render("press space to try again", True, BLACK)

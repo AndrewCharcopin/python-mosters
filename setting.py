@@ -33,6 +33,12 @@ def Bg(num):
   elif num == 3:
     img = pygame.image.load("assets/images/items/field_back.png")
     return Transform(img, 500,500)
+  elif num == 4:
+    img = pygame.image.load("assets/images/items/back_castle.jpeg")
+    return Transform(img, 500,500)
+  elif num == 5:
+    img = pygame.image.load("assets/images/items/hime_haikei.jpg")
+    return Transform(img, 500,500)
   else:
     img = pygame.image.load("assets/images/items/bg.jpg")
     return Transform(img, 500,500)
