@@ -11,14 +11,14 @@ class Player():
     self.rect = pygame.image.load(enemy_path + 'slime/slime-move-0.png').get_rect()
     self.gold = 0
     self.stage = 1
-    self.hp = 100
+    self.hp = 200
     self.right = True
     self.left = False
     self.walkCount = 0
     self.status = 0
     self.skill = 0
     self.charge = 1
-    self.power = self.charge * 10
+    self.power = self.charge * 40
 
   def draw(self):
     if self.walkCount + 1 >= 12:
