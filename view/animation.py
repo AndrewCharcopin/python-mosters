@@ -68,7 +68,7 @@ def EndScreen():
 
 	StartButton = Font(30).render("END",True,WHITE)
 	StartRect = StartButton.get_rect()
-	StartRect.center = (SCREEN_WIDTH/2,(SCREEN_HEIGHT/2) + CoderRect.height + StartRect.height)
+	StartRect.center = (SCREEN_WIDTH/2,(SCREEN_HEIGHT/2) + CoderRect.height + CoderRect.height*5)
 
 	Move = True
 	while Move:
