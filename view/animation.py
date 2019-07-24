@@ -20,7 +20,7 @@ def Prince(player):
 				pygame.quit()
 				sys.exit()
 		screen.fill((30, 30, 30))
-		screen.blit(Bg(player.stage), (0,0))
+		screen.blit(pygame.image.load("assets/images/items/prince_bg.jpg"), (0,0))
 
 		# draw player
 		player.draw()
@@ -56,12 +56,19 @@ def EndScreen():
 	Title = Font(25).render("Python Monsters",True,WHITE)
 	TitleRect = Title.get_rect()
 
-	Coder = Font(15).render("by Python Monsters Association",True,GREY)
+	Coder = Font(15).render("by Group B",True,GREY)
 	CoderRect = Coder.get_rect()
+
+	Credit = Font(15).render("Credit",True,GREY)
+	CreditRect = Credit.get_rect()
+	Music = Font(15).render("Music: Wingless-seraph, DragonQuest",True,GREY)
+	MusicRect = Music.get_rect()
+	Image = Font(15).render("Image: RPGtkool",True,GREY)
+	ImageRect = Image.get_rect()
 
 	StartButton = Font(30).render("END",True,WHITE)
 	StartRect = StartButton.get_rect()
-	StartRect.center = (SCREEN_WIDTH/2,(SCREEN_HEIGHT/2) + CoderRect.height + StartRect.height)
+	StartRect.center = (SCREEN_WIDTH/2,(SCREEN_HEIGHT/2) + CoderRect.height + CoderRect.height*5)
 
 	Move = True
 	while Move:
@@ -74,6 +81,13 @@ def EndScreen():
 		screen.blit(Title,TitleRect)
 		CoderRect.center = (SCREEN_WIDTH/2,title_y)
 		screen.blit(Coder,CoderRect)
+		CreditRect.center = (SCREEN_WIDTH/2,title_y + CoderRect.height*2)
+		screen.blit(Credit,CreditRect)
+		MusicRect.center = (SCREEN_WIDTH/2,title_y + CoderRect.height*3)
+		screen.blit(Music,MusicRect)
+		ImageRect.center = (SCREEN_WIDTH/2,title_y + CoderRect.height*4)
+		screen.blit(Image,ImageRect)
+
 		pygame.display.flip()
 		pygame.time.Clock().tick(30)
 		title_y += 1
@@ -102,9 +116,6 @@ def EndScreen():
 						pygame.mouse.get_pos()[1] < StartRect.y + StartRect.height):
 							Start = False
 
-
-
-
 def StartScreen():
 	# title_font = Font(25)
 	LEFT_CLICK = (1,0,0)
@@ -120,7 +131,7 @@ def StartScreen():
 	Title = Font(25).render("Python Monsters",True,WHITE)
 	TitleRect = Title.get_rect()
 
-	Coder = Font(15).render("by Python Monsters Association",True,GREY)
+	Coder = Font(15).render("by GroupB",True,GREY)
 	CoderRect = Coder.get_rect()
 
 	StartButton = Font(30).render("START",True,WHITE)

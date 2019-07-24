@@ -12,10 +12,9 @@ def main():
   while player.stage < 5:
     Stage(player)
     Fight(player)
-  else:
-    Write_csv(player)
-    Prince(player)
-    EndScreen()
+  Write_csv(player)
+  Prince(player)
+  EndScreen()
 
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
