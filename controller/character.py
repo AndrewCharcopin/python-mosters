@@ -30,21 +30,6 @@ class Player():
       screen.blit(pygame.transform.flip(self.images[self.walkCount//3], True, False), (self.x, self.y))
       self.walkCount += 1
 
-  def attack(self):
-    text = Font(14).render("Attack: " + str(self.stage * 10), True, BLACK)
-    screen.blit(text, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 80))
-    self.skill = 1
-
-  def barrier(self):
-    text = Font(14).render("Barrier!", True, BLACK)
-    screen.blit(text, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 80))
-    self.skill = 2
-
-  def charge(self):
-    text = Font(14).render("Charge!", True, BLACK)
-    screen.blit(text, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 80))
-    self.skill = 3
-
 class Enemy():
   def __init__(self,rect):
     self.x = SCREEN_WIDTH - rect.width - 20
